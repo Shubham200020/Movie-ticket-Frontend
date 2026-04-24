@@ -1,0 +1,38 @@
+<h2>Location Form</h2>
+
+<form (ngSubmit)="submit()">
+  <input type="text" [(ngModel)]="form.state" name="state" placeholder="State">
+  <input type="text" [(ngModel)]="form.city" name="city" placeholder="City">
+  <input type="text" [(ngModel)]="form.location" name="location" placeholder="Location">
+
+  <button type="submit">
+    {{ isEdit ? 'Update' : 'Add' }}
+  </button>
+
+  <button type="button" (click)="reset()">Clear</button>
+</form>
+
+<hr>
+
+<h2>Location List</h2>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>State</th>
+    <th>City</th>
+    <th>Location</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let item of locations">
+    <td>{{ item.id }}</td>
+    <td>{{ item.state }}</td>
+    <td>{{ item.city }}</td>
+    <td>{{ item.location }}</td>
+    <td>
+      <button (click)="edit(item)">Edit</button>
+      <button (click)="delete(item.id)">Delete</button>
+    </td>
+  </tr>
+</table>

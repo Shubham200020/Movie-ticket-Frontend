@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-card">
+    
+    <h2>Login</h2>
+
+    <!-- 🔘 Role Toggle -->
+    <div class="role-toggle">
+      <button 
+        type="button"
+        [class.active]="role === 'user'"
+        (click)="setRole('user')">
+        User
+      </button>
+
+      <button 
+        type="button"
+        [class.active]="role === 'admin'"
+        (click)="setRole('admin')">
+        Admin
+      </button>
+    </div>
+
+    <!-- 🧾 Form -->
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <div class="form-group">
+        <input 
+          type="email" 
+          name="email" 
+          [(ngModel)]="user.email" 
+          placeholder="Enter Email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          name="password" 
+          [(ngModel)]="user.password" 
+          placeholder="Enter Password"
+          required
+        />
+      </div>
+
+      <button class="login-btn" type="submit" [disabled]="loginForm.invalid">
+        Login
+      </button>
+
+    </form>
+
+    <!-- 🔗 Register -->
+    <p class="register-link">
+      Don't have an account?
+      <a (click)="login()">Register</a>
+    </p>
+
+  </div>
+</div>

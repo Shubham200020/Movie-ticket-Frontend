@@ -1,0 +1,36 @@
+
+<div class="hero" [style.background-image]="'url(' + data.widePosterUrl + ')'">
+
+
+  <div class="overlay"></div>
+
+  <div class="content container" >
+    
+
+    <div class="poster">
+      <img src="{{ data.posterUrl }}" />
+    </div>
+
+    <div class="details">
+      <h1>{{ data.title }}</h1>
+
+      <div class="rating-box">
+        ⭐ <span>9.5/10</span>
+        <small>(350K+ Votes)</small>
+        <button class="rate-btn">Rate now</button>
+      </div>
+
+      <p class="meta">
+        {{data.hour}}hr {{data.min}}m • {{data.genre}}• {{data.grade}} • {{data.releaseDate | date:'dd MMM, yyyy'}}
+      </p>
+
+     
+
+      <button class="book-btn" (click)="routers()">Book tickets</button>
+    </div>
+
+  </div>
+</div>
+<div *ngIf="indication">
+ <app-show-selection> </app-show-selection>
+</div>

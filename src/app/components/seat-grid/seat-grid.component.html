@@ -1,0 +1,33 @@
+<div class="screen">SCREEN THIS WAY</div>
+
+<div class="seat-container">
+
+  <div class="row" *ngFor="let row of rows">
+    
+    <div class="row-label">{{ row }}</div>
+
+    <div class="seats">
+      <div 
+        *ngFor="let seat of seats[row]"
+        class="seat"
+        [ngClass]="{
+          'available': seat.status === 'available' && !isSelected(row, seat),
+          'selected': isSelected(row, seat),
+          'sold': seat.status === 'sold'
+        }"
+        (click)="toggleSeat(row, seat)"
+      >
+        {{ seat.number }}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div><span class="box available"></span> Available</div>
+  <div><span class="box selected"></span> Selected</div>
+  <div><span class="box sold"></span> Sold</div>
+</div>

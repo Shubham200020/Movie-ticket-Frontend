@@ -1,0 +1,98 @@
+
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="container">
+
+  <h2 class="title">🎬 Add New Movie</h2>
+
+  <div class="grid">
+
+    <div class="form-group full">
+      <label>Title</label>
+      <input type="text" formControlName="title" placeholder="Enter movie title" />
+    </div>
+
+    <div class="form-group full">
+  <label>Genres</label>
+
+  <div class="chip-wrapper">
+
+    <!-- Selected Chips -->
+    <div class="chip" *ngFor="let g of genres; let i = index">
+      {{ g }}
+      <span (click)="removeGenre(i)">✖</span>
+    </div>
+
+    <!-- Input -->
+    <input
+      type="text"
+      [(ngModel)]="genreInput"
+      (input)="onInputChange()"
+      [ngModelOptions]="{standalone: true}" 
+      (keydown.enter)="addGenre()"
+      placeholder="Type genre..."
+    />
+
+  </div>
+
+  <!-- Dropdown -->
+  <div class="dropdown" *ngIf="filteredGenres.length > 0">
+    <div
+      class="dropdown-item"
+      *ngFor="let g of filteredGenres"
+      (click)="addGenre(g)"
+    >
+      {{ g }}
+    </div>
+  </div>
+
+</div>
+
+    <div class="form-group">
+      <label>Grade</label>
+      <input type="text" formControlName="grade" maxlength="4" placeholder="PG / U/A" />
+    </div>
+
+    <div class="form-group">
+      <label>Hours</label>
+      <input type="number" formControlName="Hour" />
+    </div>
+
+    <div class="form-group">
+      <label>Minutes</label>
+      <input type="number" formControlName="Min" />
+    </div>
+
+    <div class="form-group">
+      <label>Box Office</label>
+      <input type="number" formControlName="boxOffice" />
+    </div>
+
+    <div class="form-group">
+      <label>Budget</label>
+      <input type="number" formControlName="budget" />
+    </div>
+
+    <div class="form-group">
+      <label>Release Date</label>
+      <input type="date" formControlName="releaseDate" />
+    </div>
+
+    <div class="form-group full">
+      <label>Poster URL</label>
+      <input type="text" formControlName="posterUrl" />
+    </div>
+
+    <div class="form-group full">
+      <label>Wide Poster URL</label>
+      <input type="text" formControlName="widePosterUrl" />
+    </div>
+
+  </div>
+
+  <div class="checkbox">
+    <input type="checkbox" formControlName="Recommended" />
+    <span>Recommended</span>
+  </div>
+
+  <button type="submit" class="btn">🚀 Submit Movie</button>
+
+</form>

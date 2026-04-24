@@ -1,0 +1,25 @@
+<div class="container">
+
+  <div class="theatre-card" *ngFor="let theatre of theatres">
+
+    <div class="theatre-header">
+      <h3>{{ theatre.name }}</h3>
+      <span class="cancel">Non-cancellable</span>
+    </div>
+
+    <div class="show-times">
+      <button 
+        *ngFor="let show of theatre.shows"
+        (click)="selectShow(show)"
+        [ngClass]="{
+          'available': show.type === 'available',
+          'fast': show.type === 'fast'
+        }"
+      >
+        {{ show.time }}
+      </button>
+    </div>
+
+  </div>
+
+</div>

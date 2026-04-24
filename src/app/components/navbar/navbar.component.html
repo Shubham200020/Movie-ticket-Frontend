@@ -1,0 +1,12 @@
+<nav class="navbar">
+  <div class="logo">🎬 MovieZone</div>
+
+  <input type="text" placeholder="Search movies..." />
+
+  <div class="menu">
+    <span>Movies</span>
+    <span>Theatres</span>
+    <span (click)="login()" *ngIf="!isLoggedIn">Login</span>
+    <span (click)="logout()" *ngIf="isLoggedIn">Logout</span>
+  </div>
+</nav>

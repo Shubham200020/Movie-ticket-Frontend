@@ -1,0 +1,20 @@
+<div class="container">
+  <h2 class="title">Recommended Movies</h2>
+
+  <div class="movie-grid">
+    <div class="movie-card" *ngFor="let i of movie">
+      <div class="overlay" (click)="goToMovie(i.id)">
+
+      <div class="poster">
+        <img [src]="i.posterUrl" [alt]="movie.title">
+      </div>
+
+      <div class="info">
+        <h3>{{ i.title }}</h3>
+        <p class="genre">{{ i.genre }}</p>
+        <p class="rating">⭐ {{ i.rating }}</p>
+      </div>
+</div>
+    </div>
+  </div>
+</div>

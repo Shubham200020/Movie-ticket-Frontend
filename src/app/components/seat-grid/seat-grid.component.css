@@ -1,0 +1,87 @@
+.screen {
+  text-align: center;
+  margin: 20px auto;
+  padding: 10px;
+  width: 300px;
+  background: #ddd;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.seat-container {
+  width: 80%;
+  margin: auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.row-label {
+  width: 30px;
+  font-weight: bold;
+}
+
+.seats {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.seat {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+/* Available */
+.available {
+  border-color: green;
+  color: green;
+}
+
+/* Selected */
+.selected {
+  background: green;
+  color: white;
+}
+
+/* Sold */
+.sold {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.box.available {
+  border: 2px solid green;
+}
+
+.box.selected {
+  background: green;
+}
+
+.box.sold {
+  background: #ccc;
+}

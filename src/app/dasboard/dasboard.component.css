@@ -1,0 +1,126 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+  background: #0f172a;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #6d28d9, #4c1d95);
+  padding: 25px 15px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sidebar li {
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.sidebar li:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateX(5px);
+}
+
+/* Main */
+.main {
+  flex: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e293b;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.topbar input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 250px;
+  background: #334155;
+  color: white;
+}
+
+/* Welcome */
+.welcome-card {
+  background: linear-gradient(90deg, #9333ea, #7c3aed);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+/* Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  background: #334155;
+}
+
+/* Table */
+.table-card {
+  margin-top: 25px;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #334155;
+}
+
+th, td {
+  padding: 12px;
+}
+
+tr:hover {
+  background: #334155;
+}
+
+/* Content */
+.content {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}

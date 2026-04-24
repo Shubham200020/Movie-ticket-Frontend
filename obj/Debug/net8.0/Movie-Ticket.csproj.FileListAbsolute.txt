@@ -1,0 +1,6 @@
+D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.csproj.AssemblyReference.cache
+D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.GeneratedMSBuildEditorConfig.editorconfig
+D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.AssemblyInfoInputs.cache
+D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.AssemblyInfo.cs
+D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.csproj.CoreCompileInputs.cache
+D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.MvcApplicationPartsAssemblyInfo.cache

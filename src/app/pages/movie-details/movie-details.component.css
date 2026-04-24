@@ -1,0 +1,98 @@
+.hero {
+  position: relative;
+  height: 500px;
+  background: url('https://timesofindia.indiatimes.com/thumb/msid-129670845,width-1280,height-720,resizemode-4/129670845.jpg') center/cover no-repeat;
+  color: white;
+}
+
+/* Dark overlay like BookMyShow */
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.9) 20%,
+    rgba(0,0,0,0.6) 50%,
+    rgba(0,0,0,0.3) 100%
+  );
+}
+
+/* Layout */
+.content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 40px;
+}
+
+/* Poster */
+.poster img {
+  width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* Details */
+.details h1 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* Rating box */
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.1);
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+.rating-box span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.rate-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+/* Meta text */
+.meta {
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+/* Tags */
+.tags span {
+  background: rgba(255,255,255,0.2);
+  padding: 5px 10px;
+  border-radius: 6px;
+  margin-right: 8px;
+  font-size: 12px;
+}
+
+/* Book button */
+.book-btn {
+  margin-top: 20px;
+  background: #f84464;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.book-btn:hover {
+  background: #ff2e55;
+}

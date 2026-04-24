@@ -1,0 +1,69 @@
+
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>🎬 MovieTicket</h2>
+    <ul>
+      <li (click)="changeContent('home')">🏠 Home</li>
+      <li (click)="changeContent('location')">📍 Locations</li>
+      <li (click)="changeContent('movie')">🎥 Movies</li>
+      <li >🎟 Shows</li>
+      <li>💺 Seats</li>
+      <li>📊 Booking</li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <input type="text" placeholder="Search..." />
+      <span>👤 Admin</span>
+    </div>
+
+    <!-- Welcome Card -->
+    <div class="welcome-card">
+      <div>
+        <h2>Welcome Back {{user.name}}👋</h2>
+        <p>Manage your movie booking system easily</p>
+      </div>
+    </div>
+    <div class="content" *ngIf="content=='home'">
+    <!-- Cards -->
+    <div class="card-grid">
+      <div class="card" >🎬 Movies <h3>12</h3></div>
+      <div class="card">🏢 Cinemas <h3>5</h3></div>
+      <div class="card">🎟 Shows <h3>20</h3></div>
+      <div class="card">💺 Seats <h3>200</h3></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <h3>Recent Locations</h3>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>State</th>
+          <th>City</th>
+          <th>Location</th>
+        </tr>
+
+        <tr *ngFor="let item of locations">
+          <td>{{item.id}}</td>
+          <td>{{item.state}}</td>
+          <td>{{item.city}}</td>
+          <td>{{item.location}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="content" *ngIf="content=='movie'">
+    <app-add-movies></app-add-movies>
+  </div>
+  <div class="content" *ngIf="content=='location'">
+    <app-city-input></app-city-input>
+  </div>
+  </div>
+</div>

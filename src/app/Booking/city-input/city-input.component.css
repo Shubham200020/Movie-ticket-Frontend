@@ -1,0 +1,114 @@
+/* Page wrapper */
+.container {
+color: white;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Card style */
+.card {
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+/* Heading */
+h2 {
+  margin-bottom: 15px;
+  color: #ca3e3e;
+}
+
+/* Form inputs */
+form input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+form input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Buttons */
+button {
+  padding: 8px 14px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
+
+button[type="button"]:hover {
+  background-color: #545b62;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+}
+
+table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+table tr:hover {
+  color: black;
+  background-color: #f5f5f5;
+}
+
+/* Action buttons */
+table button {
+  margin: 2px;
+  padding: 5px 10px;
+}
+
+table button:first-child {
+  background-color: #28a745;
+  color: white;
+}
+
+table button:first-child:hover {
+  background-color: #218838;
+}
+
+table button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+table button:last-child:hover {
+  background-color: #c82333;
+}
