@@ -8,6 +8,7 @@
       <li (click)="changeContent('home')">🏠 Home</li>
       <li (click)="changeContent('location')">📍 Locations</li>
       <li (click)="changeContent('movie')">🎥 Movies</li>
+      <li (click)="changeContent('theator')">🏢 Theators</li>
       <li >🎟 Shows</li>
       <li>💺 Seats</li>
       <li>📊 Booking</li>
@@ -33,8 +34,8 @@
     <div class="content" *ngIf="content=='home'">
     <!-- Cards -->
     <div class="card-grid">
-      <div class="card" >🎬 Movies <h3>12</h3></div>
-      <div class="card">🏢 Cinemas <h3>5</h3></div>
+      <div class="card" >🎬 Movies <h3>{{movie}}</h3></div>
+      <div class="card" >🏢 Theator <h3>{{theator}}</h3></div>
       <div class="card">🎟 Shows <h3>20</h3></div>
       <div class="card">💺 Seats <h3>200</h3></div>
     </div>
@@ -64,6 +65,9 @@
   </div>
   <div class="content" *ngIf="content=='location'">
     <app-city-input></app-city-input>
+  </div>
+  <div class="content" *ngIf="content=='theator'">
+    <app-theator-input></app-theator-input>
   </div>
   </div>
 </div>

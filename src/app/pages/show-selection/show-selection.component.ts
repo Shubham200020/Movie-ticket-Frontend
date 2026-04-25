@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { SeatsInputComponent } from "../../Booking/seats-input/seats-input.component";
 
 @Component({
   selector: 'app-show-selection',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SeatsInputComponent],
   templateUrl: './show-selection.component.html',
   styleUrl: './show-selection.component.css'
 })
 export class ShowSelectionComponent {
+  isSeat=true;
 
   theatres = [
     {
@@ -31,5 +33,8 @@ export class ShowSelectionComponent {
 
   selectShow(show: any) {
     console.log('Selected:', show);
+  }
+  OnClk(){
+this.isSeat=false
   }
 }

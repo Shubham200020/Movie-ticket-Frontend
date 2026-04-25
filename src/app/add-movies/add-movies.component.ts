@@ -19,19 +19,23 @@ allGenres: string[] = [
   'Action', 'Comedy', 'Drama', 'Horror', 'Thriller',
   'Romance', 'Sci-Fi', 'Adventure', 'Fantasy'
 ];
+  movie: any;
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.movieForm = this.fb.group({
-  title: ['', Validators.required],
+   title: ['', Validators.required],
   genre: [''],
   grade: ['', [Validators.maxLength(4)]],
-  Hour: [0],          // ✅ FIX
-  Min: [0],           // ✅ FIX
+
+  hour: [0],           // ✅ FIX
+  min: [0],            // ✅ FIX
+
   boxOffice: [null],
   budget: [null],
   releaseDate: [''],
   posterUrl: [''],
   widePosterUrl: [''],
-  Recommended: [false] // ✅ FIX spelling
+
+  recomended: [false] // ✅ FIX spelling
 });
 
     
@@ -51,10 +55,11 @@ addGenre(value?: string) {
   if (genre && !this.genres.includes(genre)) {
     this.genres.push(genre);
   }
+
+  // ✅ ADD HERE
   this.movieForm.patchValue({
-    genre: [this.genres.join(',')]
+    genre: this.genres.join(',')
   });
-  
 
   this.genreInput = '';
   this.filteredGenres = [];
@@ -62,16 +67,41 @@ addGenre(value?: string) {
 
 removeGenre(index: number) {
   this.genres.splice(index, 1);
+
+  // ✅ ADD HERE ALSO
+  this.movieForm.patchValue({
+    genre: this.genres.join(',')
+  });
 }
   
   onSubmit() {
-    if (this.movieForm.valid)
-    this.http.post('https://localhost:7061/api/movie', this.movieForm.value)
+  if (this.movieForm.valid) {
+
+    const formValue = { ...this.movieForm.value };
+  // ✅ Fix numbers
+    formValue.hour = Number(formValue.hour);
+    formValue.min = Number(formValue.min);
+    formValue.boxOffice = Number(formValue.boxOffice);
+    formValue.budget = Number(formValue.budget);
+
+    // ✅ Fix date
+    if (formValue.releaseDate) {
+      formValue.releaseDate = new Date(formValue.releaseDate).toISOString();
+    }
+
+    console.log(formValue); // 🔥 Debug
+
+    this.http.post('https://localhost:7061/api/movie', formValue)
       .subscribe({
         next: () => alert('Movie Added ✅'),
-        error: () => alert('Error ❌')
+        error: (err) => {
+          console.error(err); // 🔥 SEE REAL ERROR
+          alert('Error ❌');
+        }
       });
-    else
-      alert('Please fill in all required fields correctly ❌');
   }
+  else {
+    alert('Please fill in all required fields correctly ❌');
+  }
+}
 }

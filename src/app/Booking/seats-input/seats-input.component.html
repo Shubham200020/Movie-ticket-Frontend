@@ -1,1 +1,38 @@
-<p>seats-input works!</p>
+<div class="legend-bar">
+  <div class="legend-item">
+    <div class="seat-demo available"></div>
+    <span>Available</span>
+  </div>
+
+  <div class="legend-item">
+    <div class="seat-demo selected"></div>
+    <span>Selected</span>
+  </div>
+
+  <div class="legend-item">
+    <div class="seat-demo booked"></div>
+    <span>Booked</span>
+  </div>
+</div>
+<div class="seat-grid">
+  <div *ngFor="let row of seatGrid; let i = index" class="row">
+
+    <!-- Row Label -->
+    <div class="row-label">
+      {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i] }}
+    </div>
+
+    <div *ngFor="let seat of row"
+         class="seat-wrapper"
+         [class.available]="!isBooked(seat) && !isSelected(seat)"
+         [class.selected]="isSelected(seat)"
+         [class.booked]="isBooked(seat)"
+         (click)="toggleSeat(seat)">
+
+      <div class="seat">
+        <span>{{ seat }}</span>
+      </div>
+
+    </div>
+  </div>
+</div>

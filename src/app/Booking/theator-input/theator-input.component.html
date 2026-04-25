@@ -1,43 +1,75 @@
-<div class="container mt-4">
-  <h2>Add/Update Theater</h2>
+<div class="theater-wrapper">
 
-  <form (ngSubmit)="submit()">
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label class="form-label">Theater Name</label>
-        <input type="text" [(ngModel)]="form.name" name="name" class="form-control" placeholder="Enter name">
+  <div class="form-card">
+    <h2>🎬 Add / Update Theater</h2>
+
+    <form (ngSubmit)="submit()">
+
+      <div class="form-grid">
+
+        <div class="field-group">
+          <label>Theater Name</label>
+          <input 
+            type="text" 
+            [(ngModel)]="form.name" 
+            name="name"
+            placeholder="Enter theater name"
+          />
+        </div>
+
+        <div class="field-group">
+          <label>Select Location</label>
+          <select [(ngModel)]="form.locationId" name="locationId">
+            <option [ngValue]="null" disabled>-- Select Location --</option>
+            <option *ngFor="let loc of locationList" [value]="loc.id">
+              {{ loc.city }} - {{ loc.location }} ({{ loc.state }})
+            </option>
+          </select>
+        </div>
+
       </div>
 
-      <div class="col-md-6">
-        <label class="form-label">Select Location</label>
-        <select [(ngModel)]="form.locationId" name="locationId" class="form-select">
-          <option [ngValue]="null" disabled>-- Select a City/Location --</option>
-          <option *ngFor="let loc of locationList" [value]="loc.id">
-            {{ loc.city }} - {{ loc.location }} ({{ loc.state }})
-          </option>
-        </select>
+      <div class="btn-group">
+        <button type="submit" class="btn-save">
+          {{ isEdit ? 'Update' : 'Save' }} Theater
+        </button>
+
+        <button type="button" class="btn-clear" (click)="reset()">
+          Clear
+        </button>
       </div>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Save Theater</button>
-  </form>
+    </form>
+  </div>
 
-  <hr>
+  <!-- TABLE -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Theater Name</th>
+          <th>Location Info</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Theater Name</th>
-        <th>Location Info</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let t of theaters">
-        <td>{{ t.name }}</td>
-        <td>
-          {{ t.location }} 
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr *ngFor="let t of theaters">
+          <td>{{ t.name }}</td>
+
+          <td>
+            {{ t.location?.city }} - 
+            {{ t.location?.location }} 
+            ({{ t.location?.state }})
+          </td>
+
+          <td class="action-btns">
+            <button (click)="edit(t)">✏️</button>
+            <button (click)="delete(t.id)">🗑</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>

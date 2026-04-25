@@ -7,7 +7,8 @@ import { LocationService, Location as LocationData } from '../../services/locati
 export interface Theater {
   id: number;
   name: string;
-  location: string;
+  locationId: number; 
+  location?: any;     // optional (for display)
   screens?: any[];
 }
 @Component({
@@ -24,7 +25,8 @@ export class TheatorInputComponent implements OnInit {
   form: any = {
     id: 0,
     name: '',
-    location: ''
+   
+    locationId:0
   };
 
   isEdit = false; // Added to track state
@@ -47,11 +49,16 @@ export class TheatorInputComponent implements OnInit {
   }
 
   loadTheaters() {
-    this.theaterService.getAll().subscribe({
-      next: (res) => this.theaters = res,
-      error: (err) => console.error('Error loading theaters', err)
-    });
-  }
+  this.theaterService.getAll().subscribe({
+    next: (res: any[]) => {
+      this.theaters = res.map(t => ({
+        ...t,
+        locationId: t.locationId || t.location?.id
+      }));
+    },
+    error: (err) => console.error('Error loading theaters', err)
+  });
+}
 
   submit() {
     if (this.form.id === 0) {
@@ -68,9 +75,13 @@ export class TheatorInputComponent implements OnInit {
   }
 
   edit(item: Theater) {
-    this.form = { ...item };
-    this.isEdit = true;
-  }
+   this.form = {
+    id: item.id,
+    name: item.name,
+    locationId: item.locationId || item.location?.id
+  };
+  this.isEdit = true;
+}
 
   delete(id: number) {
     if(confirm('Delete theater?')) {
@@ -79,7 +90,6 @@ export class TheatorInputComponent implements OnInit {
   }
 
   reset() {
-    this.form = { id: 0, name: '', location: '' };
-    this.isEdit = false;
-  }
+  this.form = { id: 0, name: '', locationId: 0 };
+}
 }
