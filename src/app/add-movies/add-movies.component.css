@@ -1,149 +1,219 @@
-body {
-  background: #0f172a;
-  font-family: 'Segoe UI', sans-serif;
+.admin-movie-container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-/* Container */
-.container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 25px;
-  background: #1e293b;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  color: white;
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
 }
 
-/* Title */
-.title {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #f43f5e;
+h2 {
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: var(--primary);
 }
 
-/* Grid Layout */
-.grid {
+/* --- Form Styles --- */
+.form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
 }
 
-/* Full width fields */
-.full {
-  grid-column: span 2;
-}
+/* Specific spans for better layout */
+.form-group.full-width { grid-column: 1 / -1; }
+.form-group.double-width { grid-column: span 2; }
 
-/* Form Group */
 .form-group {
   display: flex;
   flex-direction: column;
-}
-.form-group .txt{
-    width: 100%;
-}
-
-/* Labels */
-label {
-  margin-bottom: 5px;
-  font-size: 13px;
-  color: #94a3b8;
-}
-
-/* Inputs */
-input {
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  background: #334155;
-  color: white;
-  transition: 0.3s;
-}
-
-/* Focus effect */
-input:focus {
-  background: #475569;
-  box-shadow: 0 0 5px #f43f5e;
-}
-
-/* Checkbox */
-.checkbox {
-  margin-top: 15px;
-  display: flex;
-  align-items: center;
   gap: 8px;
-}
-
-/* Button */
-.btn {
-  margin-top: 20px;
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #f43f5e, #ec4899);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-/* Hover effect */
-.btn:hover {
-  transform: scale(1.03);
-  box-shadow: 0 5px 15px rgba(244, 63, 94, 0.5);
-}
-.chip-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 8px;
-  background: #334155;
-  border-radius: 10px;
   position: relative;
 }
 
-/* Chips */
-.chip {
-  background: linear-gradient(135deg, #f43f5e, #ec4899);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
+.form-row {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 80px;
+}
+
+label {
   font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-/* Remove */
-.chip span {
-  cursor: pointer;
-}
-
-/* Input */
-.chip-wrapper input {
-  border: none;
-  outline: none;
-  background: transparent;
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 15px;
+  border-radius: 10px;
   color: white;
-  padding: 5px;
-  min-width: 120px;
+  transition: 0.3s;
 }
 
-/* Dropdown */
-.dropdown {
+input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}
+
+.genre-input-wrapper {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
   background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  margin-top: 5px;
+  z-index: 10;
   max-height: 150px;
   overflow-y: auto;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
 
-/* Dropdown item */
-.dropdown-item {
+.suggestions div {
   padding: 10px;
   cursor: pointer;
-  transition: 0.2s;
-  color: #e2e8f0;
 }
+
+.suggestions div:hover { background: var(--primary); }
+
+.genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip {
+  background: rgba(99, 102, 241, 0.2);
+  color: #c7d2fe;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip i { cursor: pointer; font-style: normal; opacity: 0.6; }
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-submit {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* --- Table Styles --- */
+.movie-table-wrapper {
+  overflow-x: auto;
+}
+
+.movie-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.movie-table th {
+  text-align: left;
+  padding: 15px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.movie-table td {
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.movie-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-poster {
+  width: 40px;
+  height: 55px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  background: rgba(244, 63, 94, 0.1);
+  color: #fb7185;
+}
+
+.status-badge.active {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+}
+
+.action-cells {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.icon-btn.edit:hover { background: var(--primary); }
+.icon-btn.delete:hover { background: #e11d48; }

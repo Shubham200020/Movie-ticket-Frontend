@@ -28,3 +28,23 @@ button {
 button:disabled {
   background: gray;
 }
+
+.alert {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #f87171;
+}
+
+.alert-success {
+  background-color: #dcfce3;
+  color: #22c55e;
+  border: 1px solid #86efac;
+}

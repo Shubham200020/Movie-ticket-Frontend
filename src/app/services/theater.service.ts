@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Theater {
-  id: number;
-  name: string;
-  location: string;
-  screens?: any[]; // Keep as optional array since backend includes them
-}
+import { Theater } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class TheaterService {
-  private apiUrl = 'https://localhost:7061/api/theater'; // Adjusted to match [Route("api/[controller]")]
+  private apiUrl = 'https://localhost:7061/api/theater';
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Theater[]> {
     return this.http.get<Theater[]>(this.apiUrl);
+  }
+
+  getTheater(id: number): Observable<Theater> {
+    return this.http.get<Theater>(`${this.apiUrl}/${id}`);
   }
 
   create(theater: Theater): Observable<Theater> {

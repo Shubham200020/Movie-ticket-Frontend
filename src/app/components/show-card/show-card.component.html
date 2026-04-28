@@ -1,14 +1,9 @@
-
-<div class="hero" [style.background-image]="'url(' + data.widePosterUrl + ')'">
-
-
+<div class="hero" [style.background-image]="(data.widePosterData ? 'url(data:image/jpeg;base64,' + data.widePosterData + ')' : (data.widePosterUrl ? 'url(' + data.widePosterUrl + ')' : 'none')) | safeUrl">
   <div class="overlay"></div>
 
   <div class="content container" >
-    
-
     <div class="poster">
-      <img src="{{ data.posterUrl }}" />
+      <img [src]="(data.posterData ? 'data:image/jpeg;base64,' + data.posterData : (data.posterUrl || 'assets/placeholder.jpg')) | safeUrl" />
     </div>
 
     <div class="details">

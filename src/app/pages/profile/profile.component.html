@@ -1,0 +1,54 @@
+<div class="profile-container">
+  <div class="profile-header glass">
+    <div class="avatar">
+      {{ user?.name?.charAt(0) | uppercase }}
+    </div>
+    <div class="user-info">
+      <h2>{{ user?.name }}</h2>
+      <p class="email">{{ user?.email }}</p>
+      <span class="role-badge" [ngClass]="user?.role">{{ user?.role | titlecase }}</span>
+    </div>
+  </div>
+
+  <div class="dashboard-tabs" *ngIf="user?.role === 'admin'">
+    <button [class.active]="activeTab === 'personal'" (click)="setTab('personal')">My Bookings</button>
+    <button [class.active]="activeTab === 'system'" (click)="setTab('system')">All System Bookings</button>
+  </div>
+  
+  <div class="bookings-section glass">
+    <h3 *ngIf="activeTab === 'personal'">My Ticket History</h3>
+    <h3 *ngIf="activeTab === 'system'">All System Bookings</h3>
+    
+    <div class="loading-spinner" *ngIf="isLoading"></div>
+    
+    <div class="no-data" *ngIf="!isLoading && (activeTab === 'personal' ? bookings.length === 0 : allSystemBookings.length === 0)">
+      <p>No bookings found.</p>
+    </div>
+
+    <div class="booking-list" *ngIf="!isLoading">
+      <div class="booking-card glass" *ngFor="let b of (activeTab === 'personal' ? bookings : allSystemBookings)">
+        <div class="booking-movie">
+          <img [src]="(b.showtime?.movie?.posterData ? 'data:image/jpeg;base64,' + b.showtime?.movie?.posterData : (b.showtime?.movie?.posterUrl || 'assets/placeholder.png')) | safeUrl" alt="Movie Poster" class="mini-poster" *ngIf="b.showtime?.movie">
+          <div class="movie-details">
+            <h4>{{ b.showtime?.movie?.title || 'Unknown Movie' }}</h4>
+            <p class="date">{{ b.showtime?.startTime | date:'mediumDate' }} • {{ b.showtime?.startTime | date:'shortTime' }}</p>
+            <p class="theater">{{ b.showtime?.screen?.theater?.name || 'Grand Cinema' }} - {{ b.showtime?.screen?.name }}</p>
+          </div>
+        </div>
+        
+        <div class="booking-meta">
+          <div class="seats">
+            <span class="label">Seats:</span>
+            <div class="seat-badges">
+              <span class="seat-badge" *ngFor="let s of b.selectedSeats">{{ s.seat?.row }}{{ s.seat?.number }}</span>
+            </div>
+          </div>
+          <div class="price-status">
+            <div class="amount">₹{{ b.totalAmount }}</div>
+            <div class="status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ShowCardComponent } from "../show-card/show-card.component";
+import { SafeUrlPipe } from '../../services/safe-url.pipe';
 export interface Movie {
   id: number;
   title: string;
@@ -17,7 +18,7 @@ export interface Movie {
 @Component({
   selector: 'app-movie-card',
   standalone: true,
-  imports: [CommonModule, ShowCardComponent],
+  imports: [CommonModule, ShowCardComponent, SafeUrlPipe],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.css'
 })

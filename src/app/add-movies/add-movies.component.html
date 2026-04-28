@@ -1,98 +1,137 @@
+<div class="admin-movie-container">
+  
+  <!-- Movie Form Section -->
+  <div class="form-section glass">
+    <h2>{{ isEditMode ? 'Edit Movie' : 'Add New Movie' }}</h2>
+    <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-grid">
+        <div class="form-group double-width">
+          <label>Movie Title</label>
+          <input type="text" formControlName="title" placeholder="Enter title">
+        </div>
 
-<form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="container">
+        <div class="form-group">
+          <label>Grade (e.g. UA, A)</label>
+          <input type="text" formControlName="grade" maxlength="4">
+        </div>
 
-  <h2 class="title">🎬 Add New Movie</h2>
+        <div class="form-group">
+          <label>Release Date</label>
+          <input type="date" formControlName="releaseDate">
+        </div>
 
-  <div class="grid">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Hours</label>
+            <input type="number" formControlName="hour">
+          </div>
+          <div class="form-group">
+            <label>Minutes</label>
+            <input type="number" formControlName="min">
+          </div>
+        </div>
 
-    <div class="form-group full">
-      <label>Title</label>
-      <input type="text" formControlName="title" placeholder="Enter movie title" />
-    </div>
+        <div class="form-group double-width">
+          <label>Genres</label>
+          <div class="genre-input-wrapper">
+            <input 
+              type="text" 
+              [(ngModel)]="genreInput" 
+              [ngModelOptions]="{standalone: true}" 
+              (input)="onInputChange()"
+              (keydown.enter)="$event.preventDefault(); addGenre()"
+              placeholder="Type and press Enter"
+            >
+            <div class="suggestions" *ngIf="filteredGenres.length > 0">
+              <div *ngFor="let g of filteredGenres" (click)="addGenre(g)">{{ g }}</div>
+            </div>
+          </div>
+          <div class="genre-chips">
+            <span *ngFor="let g of genres; let i = index" class="chip">
+              {{ g }} <i (click)="removeGenre(i)">✕</i>
+            </span>
+          </div>
+        </div>
 
-    <div class="form-group full">
-  <label>Genres</label>
+        <div class="form-group">
+          <label>Rating (0-10)</label>
+          <input type="number" formControlName="rating" step="0.1" min="0" max="10">
+        </div>
 
-  <div class="chip-wrapper">
+        <div class="form-group double-width">
+          <label>Upload Poster Image</label>
+          <input type="file" (change)="onPosterFileSelected($event)" accept="image/*">
+          <input type="text" formControlName="posterUrl" placeholder="Or enter URL">
+        </div>
 
-    <!-- Selected Chips -->
-    <div class="chip" *ngFor="let g of genres; let i = index">
-      {{ g }}
-      <span (click)="removeGenre(i)">✖</span>
-    </div>
+        <div class="form-group double-width">
+          <label>Upload Wide Poster Image</label>
+          <input type="file" (change)="onWidePosterFileSelected($event)" accept="image/*">
+          <input type="text" formControlName="widePosterUrl" placeholder="Or enter URL">
+        </div>
 
-    <!-- Input -->
-    <input
-      type="text"
-      [(ngModel)]="genreInput"
-      (input)="onInputChange()"
-      [ngModelOptions]="{standalone: true}" 
-      (keydown.enter)="addGenre()"
-      placeholder="Type genre..."
-    />
+        <div class="form-row">
+          <div class="checkbox-group">
+            <input type="checkbox" formControlName="recomended" id="recomended">
+            <label for="recomended">Recommended</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" formControlName="running" id="running">
+            <label for="running">Currently Running</label>
+          </div>
+        </div>
+      </div>
 
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">{{ isEditMode ? 'Update Movie' : 'Add Movie' }}</button>
+        <button type="button" *ngIf="isEditMode" class="btn-cancel" (click)="resetForm()">Cancel</button>
+      </div>
+    </form>
   </div>
 
-  <!-- Dropdown -->
-  <div class="dropdown" *ngIf="filteredGenres.length > 0">
-    <div
-      class="dropdown-item"
-      *ngFor="let g of filteredGenres"
-      (click)="addGenre(g)"
-    >
-      {{ g }}
+  <!-- Movie List Section -->
+  <div class="list-section glass">
+    <div class="section-header">
+      <h2>Movie Management</h2>
+      <div class="search-bar">
+        <input type="text" placeholder="Search movies...">
+      </div>
+    </div>
+
+    <div class="movie-table-wrapper">
+      <table class="movie-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Duration</th>
+            <th>Release Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movie of movies">
+            <td class="movie-cell">
+              <img [src]="(movie.posterData ? 'data:image/jpeg;base64,' + movie.posterData : (movie.posterUrl || 'assets/placeholder.png')) | safeUrl" class="mini-poster">
+              <span>{{ movie.title }}</span>
+            </td>
+            <td>{{ movie.genre }}</td>
+            <td>{{ movie.hour }}h {{ movie.min }}m</td>
+            <td>{{ movie.releaseDate | date:'dd MMM yyyy' }}</td>
+            <td>
+              <span class="status-badge" [class.active]="movie.running">
+                {{ movie.running ? 'Running' : 'Closed' }}
+              </span>
+            </td>
+            <td class="action-cells">
+              <button class="icon-btn edit" (click)="editMovie(movie)">✎</button>
+              <button class="icon-btn delete" (click)="deleteMovie(movie.id)">🗑</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
 </div>
-
-    <div class="form-group">
-      <label>Grade</label>
-      <input type="text" formControlName="grade" maxlength="4" placeholder="PG / U/A" />
-    </div>
-
-    <div class="form-group">
-      <label>Hours</label>
-      <input type="number" formControlName="hour" />
-    </div>
-
-    <div class="form-group">
-      <label>Minutes</label>
-      <input type="number" formControlName="min" />
-    </div>
-
-    <div class="form-group">
-      <label>Box Office</label>
-      <input type="number" formControlName="boxOffice" />
-    </div>
-
-    <div class="form-group">
-      <label>Budget</label>
-      <input type="number" formControlName="budget" />
-    </div>
-
-    <div class="form-group">
-      <label>Release Date</label>
-      <input type="date" formControlName="releaseDate" />
-    </div>
-
-    <div class="form-group full">
-      <label>Poster URL</label>
-      <input type="text" formControlName="posterUrl" />
-    </div>
-
-    <div class="form-group full">
-      <label>Wide Poster URL</label>
-      <input type="text" formControlName="widePosterUrl" />
-    </div>
-
-  </div>
-
-  <div class="checkbox">
-    <input type="checkbox" formControlName="recomended" />
-    <span>Recommended</span>
-  </div>
-
-  <button type="submit" class="btn">🚀 Submit Movie</button>
-
-</form>

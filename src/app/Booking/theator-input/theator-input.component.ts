@@ -3,14 +3,8 @@ import { TheaterService } from '../../services/theater.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 // Use 'as LocationData' to avoid conflict with browser's window.Location
-import { LocationService, Location as LocationData } from '../../services/location.service';
-export interface Theater {
-  id: number;
-  name: string;
-  locationId: number; 
-  location?: any;     // optional (for display)
-  screens?: any[];
-}
+import { LocationService } from '../../services/location.service';
+import { Theater, AppLocation } from '../../models/models';
 @Component({
   selector: 'app-theator-input',
   standalone: true,
@@ -20,7 +14,7 @@ export interface Theater {
 })
 export class TheatorInputComponent implements OnInit {
  theaters: Theater[] = [];
-  locationList: LocationData[] = []; // Used the alias here
+  locationList: AppLocation[] = [];
 
   form: any = {
     id: 0,

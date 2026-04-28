@@ -1,1 +1,83 @@
-<p>showtime-input works!</p>
+<div class="showtime-container">
+  <div class="header">
+    <h2>🎭 Manage Showtimes</h2>
+    <p>Schedule movie screenings across different screens</p>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="showtimeForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Movie</label>
+          <select formControlName="movieId">
+            <option value="">Select Movie</option>
+            <option *ngFor="let movie of movies" [value]="movie.id">{{ movie.title }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Screen</label>
+          <select formControlName="screenId">
+            <option value="">Select Screen</option>
+            <option *ngFor="let screen of screens" [value]="screen.id">{{ screen.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Start Time</label>
+          <input type="datetime-local" formControlName="startTime" />
+        </div>
+
+        <div class="form-group">
+          <label>End Time</label>
+          <input type="datetime-local" formControlName="endTime" />
+        </div>
+
+        <div class="form-group">
+          <label>Base Price (₹)</label>
+          <input type="number" formControlName="basePrice" placeholder="0.00" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="showtimeForm.invalid">
+          {{ isEditMode ? 'Update Showtime' : 'Create Showtime' }}
+        </button>
+        <button type="button" class="btn-secondary" (click)="resetForm()" *ngIf="isEditMode">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="list-card">
+    <h3>Existing Showtimes</h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Movie</th>
+            <th>Screen</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of showtimes">
+            <td>{{ s.movie?.title || s.movieId }}</td>
+            <td>{{ s.screen?.name || s.screenId }}</td>
+            <td>{{ s.startTime | date:'short' }}</td>
+            <td>{{ s.endTime | date:'short' }}</td>
+            <td>₹{{ s.basePrice }}</td>
+            <td>
+              <button class="btn-edit" (click)="editShowtime(s)">✏️</button>
+              <button class="btn-delete" (click)="deleteShowtime(s.id!)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

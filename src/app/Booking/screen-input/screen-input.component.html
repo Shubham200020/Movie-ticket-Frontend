@@ -1,0 +1,61 @@
+<div class="container">
+
+  <h2>🎬 Screen Management</h2>
+
+  <form [formGroup]="screenForm" (ngSubmit)="onSubmit()" class="form">
+
+    <div class="form-group">
+      <input type="text" formControlName="name" placeholder="Screen Name">
+    </div>
+
+    <div class="form-group">
+      <input type="number" formControlName="capacity" placeholder="Capacity">
+    </div>
+
+    <div class="form-group">
+      <select formControlName="theaterId">
+        <option value="">Select Theater</option>
+        <option *ngFor="let t of theaters" [value]="t.id">
+          {{ t.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="primary-btn">
+        {{ isEditMode ? 'Update' : 'Add' }}
+      </button>
+
+      <button type="button" class="secondary-btn" (click)="resetForm()">
+        Reset
+      </button>
+    </div>
+
+  </form>
+
+  <hr>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Capacity</th>
+        <th>Theater</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of screens">
+        <td>{{ s.name }}</td>
+        <td>{{ s.capacity }}</td>
+        <td>{{ s.theaterName }}</td>
+        <td>
+          <button class="edit-btn" (click)="editScreen(s)">Edit</button>
+          <button class="delete-btn" (click)="deleteScreen(s.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

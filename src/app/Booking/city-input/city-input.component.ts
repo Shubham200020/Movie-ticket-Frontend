@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationService, Location } from '../../services/location.service';
+import { LocationService } from '../../services/location.service';
+import { AppLocation } from '../../models/models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -12,9 +13,9 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class CityInputComponent implements OnInit {
-  locations: Location[] = [];
+  locations: AppLocation[] = [];
 
-  form: Location = {
+  form: AppLocation = {
     id: 0,
     state: '',
     city: '',
@@ -47,7 +48,7 @@ export class CityInputComponent implements OnInit {
     }
   }
 
-  edit(item: Location) {
+  edit(item: AppLocation) {
     this.form = { ...item };
     this.isEdit = true;
   }

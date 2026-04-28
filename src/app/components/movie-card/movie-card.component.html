@@ -6,7 +6,7 @@
       <div class="overlay" (click)="goToMovie(i.id)">
 
       <div class="poster">
-        <img [src]="i.posterUrl" [alt]="movie.title">
+        <img [src]="(i.posterData ? 'data:image/jpeg;base64,' + i.posterData : (i.posterUrl || 'assets/placeholder.jpg')) | safeUrl" [alt]="i.title">
       </div>
 
       <div class="info">

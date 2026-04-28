@@ -1,1 +1,58 @@
-<p>booking-summary works!</p>
+<div class="summary-container" *ngIf="bill">
+  <div class="ticket glass">
+    <div class="ticket-header">
+      <div class="logo">🎬 MovieZone</div>
+      <div class="status" [ngClass]="bill.status.toLowerCase()">{{ bill.status }}</div>
+    </div>
+
+    <div class="ticket-body">
+      <div class="movie-title">{{ bill.movieTitle }}</div>
+      <div class="theater-details">
+        <span class="theater">{{ bill.theaterName }}</span> | 
+        <span class="screen">{{ bill.screenName }}</span>
+      </div>
+
+      <div class="show-time">
+        <div class="label">DATE & TIME</div>
+        <div class="value">{{ bill.showtime | date:'fullDate' }} | {{ bill.showtime | date:'shortTime' }}</div>
+      </div>
+
+      <div class="seat-info">
+        <div class="label">SEATS ({{ bill.seatCount }})</div>
+        <div class="value">{{ bill.seats.join(', ') }}</div>
+      </div>
+
+      <div class="user-info">
+        <div class="label">BOOKED BY</div>
+        <div class="value">{{ bill.userName }}</div>
+      </div>
+    </div>
+
+    <div class="ticket-footer">
+      <div class="total">
+        <div class="label">TOTAL PAID</div>
+        <div class="amount">₹{{ bill.totalAmount }}</div>
+      </div>
+      <div class="booking-id">
+        <div class="label">BOOKING ID</div>
+        <div class="value">#{{ bill.bookingId }}</div>
+      </div>
+    </div>
+
+    <div class="barcode">
+      <!-- Mock Barcode -->
+      <div class="barcode-lines"></div>
+      <div class="barcode-number">{{ bill.bookingId }}-{{ bill.bookingTime | date:'yyyyMMdd' }}</div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-print" (click)="printTicket()">Print Ticket</button>
+    <button class="btn-home" routerLink="/">Back to Home</button>
+  </div>
+</div>
+
+<div class="loading" *ngIf="!bill">
+  <div class="spinner"></div>
+  <p>Generating your ticket...</p>
+</div>

@@ -1,7 +1,12 @@
-<div class="login-container">
-  <div class="login-card">
-    
-    <h2>Login</h2>
+<div class="login-wrapper">
+  
+  <div class="login-card glass">
+    <div class="brand-logo" routerLink="/" style="cursor: pointer;">
+      🎬 <span class="brand">MovieZone</span>
+    </div>
+
+    <h2 class="welcome-text">Welcome Back</h2>
+    <p class="subtitle">Please login to your account</p>
 
     <!-- 🔘 Role Toggle -->
     <div class="role-toggle">
@@ -21,30 +26,40 @@
     </div>
 
     <!-- 🧾 Form -->
-    <form (ngSubmit)="login()" #loginForm="ngForm">
+    <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
 
       <div class="form-group">
-        <input 
-          type="email" 
-          name="email" 
-          [(ngModel)]="user.email" 
-          placeholder="Enter Email"
-          required
-        />
+        <label>Email Address</label>
+        <div class="input-wrapper">
+          <i class="icon">✉️</i>
+          <input 
+            type="email" 
+            name="email" 
+            [(ngModel)]="user.email" 
+            placeholder="Enter your email"
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          />
+        </div>
       </div>
 
       <div class="form-group">
-        <input 
-          type="password" 
-          name="password" 
-          [(ngModel)]="user.password" 
-          placeholder="Enter Password"
-          required
-        />
+        <label>Password</label>
+        <div class="input-wrapper">
+          <i class="icon">🔒</i>
+          <input 
+            type="password" 
+            name="password" 
+            [(ngModel)]="user.password" 
+            placeholder="Enter your password"
+            required
+            minlength="6"
+          />
+        </div>
       </div>
 
       <button class="login-btn" type="submit" [disabled]="loginForm.invalid">
-        Login
+        {{ role === 'admin' ? 'Login as Admin' : 'Sign In' }}
       </button>
 
     </form>
@@ -52,7 +67,7 @@
     <!-- 🔗 Register -->
     <p class="register-link">
       Don't have an account?
-      <a (click)="login()">Register</a>
+      <a routerLink="/register">Create one now</a>
     </p>
 
   </div>

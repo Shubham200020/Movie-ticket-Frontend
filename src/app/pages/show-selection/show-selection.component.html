@@ -1,31 +1,58 @@
-<div class="container" *ngIf="isSeat">
-
-  <div class="theatre-card" *ngFor="let theatre of theatres" >
-
-    <div class="theatre-header">
-      <h3>{{ theatre.name }}</h3>
-      <span class="cancel" >Non-cancellable</span>
+<div class="show-selection-container">
+  
+  <!-- Date Selector -->
+  <div class="date-selector-wrapper glass">
+    <div 
+      *ngFor="let date of dates"
+      class="date-item"
+      [class.active]="isSameDate(date, selectedDate)"
+      (click)="selectDate(date)"
+    >
+      <div class="day">{{ date | date:'EEE' }}</div>
+      <div class="date">{{ date | date:'dd' }}</div>
+      <div class="month">{{ date | date:'MMM' }}</div>
     </div>
-
-    <div class="show-times">
-      <button 
-        *ngFor="let show of theatre.shows"
-        (click)="selectShow(show)"
-        [ngClass]="{
-          'available': show.type === 'available',
-          'fast': show.type === 'fast'
-        }"
-      (click)="OnClk()">
-        {{ show.time }}
-      </button>
-    </div>
-
   </div>
 
-</div>
-<div *ngIf="!isSeat">
-<app-seats-input  [totalRows]="6"
-  [seatsPerRow]="8"
-  [bookedSeats]="['A1','A2','C3','D5']">
-</app-seats-input>
+  <!-- Theater List -->
+  <div class="theater-list">
+    <div class="theater-card glass" *ngFor="let theater of theatersWithShows">
+      <div class="theater-info">
+        <div class="theater-main">
+          <span class="heart">♡</span>
+          <div>
+            <h3>{{ theater.name }}</h3>
+            <p class="meta">📍 {{ theater.location || 'Premium Cinema' }} | 🍿 Food & Beverage</p>
+          </div>
+        </div>
+        <div class="theater-tags">
+          <span class="tag">M-Ticket</span>
+          <span class="tag">Contactless</span>
+        </div>
+      </div>
+
+      <div class="show-times">
+        <div 
+          *ngFor="let show of theater.shows"
+          class="show-btn"
+          [routerLink]="['/seats', show.id]"
+        >
+          <div class="time">{{ show.startTime | date:'hh:mm a' }}</div>
+          <div class="screen-name">{{ show.screen?.name }}</div>
+          <div class="price-hint">From ₹{{ show.basePrice }}</div>
+        </div>
+      </div>
+      
+      <div class="cancellation-policy">
+        Non-cancellable
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="theatersWithShows.length === 0" class="no-shows glass">
+      <div class="icon">📅</div>
+      <h3>No shows available</h3>
+      <p>Try selecting another date for this movie.</p>
+    </div>
+  </div>
 </div>

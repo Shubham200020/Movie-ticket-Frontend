@@ -13,4 +13,16 @@ export class AdminService {
   login(data: any) {
     return this.http.post(`${this.apiUrl}/login`, data);
   }
+
+  getAllAdmins() {
+    return this.http.get(this.apiUrl);
+  }
+
+  addAdmin(data: any) {
+    return this.http.post(this.apiUrl, data);
+  }
+
+  deleteAdmin(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

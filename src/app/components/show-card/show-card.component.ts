@@ -4,11 +4,13 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeatGridComponent } from "../seat-grid/seat-grid.component";
 import { ShowSelectionComponent } from "../../pages/show-selection/show-selection.component";
+import { RecomendedSystemComponent } from "../../recomended-system/recomended-system.component";
+import { SafeUrlPipe } from '../../services/safe-url.pipe';
 
 @Component({
   selector: 'app-show-card',
   standalone: true,
-  imports: [CommonModule, SeatGridComponent, ShowSelectionComponent],
+  imports: [CommonModule, SeatGridComponent, ShowSelectionComponent, RecomendedSystemComponent, SafeUrlPipe],
   templateUrl: './show-card.component.html',
   styleUrl: './show-card.component.css'
 })

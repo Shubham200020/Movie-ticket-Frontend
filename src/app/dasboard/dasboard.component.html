@@ -3,15 +3,35 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <h2>🎬 MovieTicket</h2>
-    <ul>
-      <li (click)="changeContent('home')">🏠 Home</li>
-      <li (click)="changeContent('location')">📍 Locations</li>
-      <li (click)="changeContent('movie')">🎥 Movies</li>
-      <li (click)="changeContent('theator')">🏢 Theators</li>
-      <li >🎟 Shows</li>
-      <li>💺 Seats</li>
-      <li>📊 Booking</li>
+    <h2>🎬 MovieZone</h2>
+    <ul class="nav-list">
+      <li (click)="changeContent('home')" [class.active]="content === 'home'">
+        <span class="icon">🏠</span> <span class="text">Home</span>
+      </li>
+      <li (click)="changeContent('location')" [class.active]="content === 'location'">
+        <span class="icon">📍</span> <span class="text">Locations</span>
+      </li>
+      <li (click)="changeContent('movie')" [class.active]="content === 'movie'">
+        <span class="icon">🎥</span> <span class="text">Movies</span>
+      </li>
+      <li (click)="changeContent('theater')" [class.active]="content === 'theater'">
+        <span class="icon">🏢</span> <span class="text">Theaters</span>
+      </li>
+      <li (click)="changeContent('screen')" [class.active]="content === 'screen'">
+        <span class="icon">🎬</span> <span class="text">Screens</span>
+      </li>
+      <li (click)="changeContent('showtime')" [class.active]="content === 'showtime'">
+        <span class="icon">🎟️</span> <span class="text">Shows</span>
+      </li>
+      <li (click)="changeContent('seat')" [class.active]="content === 'seat'">
+        <span class="icon">💺</span> <span class="text">Seats</span>
+      </li>
+      <li (click)="changeContent('admin')" [class.active]="content === 'admin'">
+        <span class="icon">👨‍💼</span> <span class="text">Admins</span>
+      </li>
+      <li (click)="changeContent('business')" [class.active]="content === 'business'">
+        <span class="icon">📊</span> <span class="text">Business</span>
+      </li>
     </ul>
   </div>
 
@@ -20,54 +40,87 @@
 
     <!-- Top Bar -->
     <div class="topbar">
-      <input type="text" placeholder="Search..." />
-      <span>👤 Admin</span>
+      <div class="search-box">
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="user-info">
+        <span>👤 {{user?.name || 'Admin'}}</span>
+      </div>
     </div>
 
     <!-- Welcome Card -->
-    <div class="welcome-card">
+    <div class="welcome-card" *ngIf="content=='home'">
       <div>
-        <h2>Welcome Back {{user.name}}👋</h2>
+        <h2>Welcome Back {{user?.name || 'Admin'}}👋</h2>
         <p>Manage your movie booking system easily</p>
       </div>
     </div>
+
     <div class="content" *ngIf="content=='home'">
-    <!-- Cards -->
-    <div class="card-grid">
-      <div class="card" >🎬 Movies <h3>{{movie}}</h3></div>
-      <div class="card" >🏢 Theator <h3>{{theator}}</h3></div>
-      <div class="card">🎟 Shows <h3>20</h3></div>
-      <div class="card">💺 Seats <h3>200</h3></div>
+      <!-- Cards -->
+      <div class="card-grid">
+        <div class="card">🎬 Movies <h3>{{movieCount}}</h3></div>
+        <div class="card">🏢 Theaters <h3>{{theaterCount}}</h3></div>
+        <div class="card">🎟 Shows <h3>{{showCount}}</h3></div>
+        <div class="card">💺 Seats <h3>{{seatCount}}</h3></div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <h3>Recent Locations</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of locations">
+                <td>{{item.id}}</td>
+                <td>{{item.state}}</td>
+                <td>{{item.city}}</td>
+                <td>{{item.location}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- Table -->
-    <div class="table-card">
-      <h3>Recent Locations</h3>
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>State</th>
-          <th>City</th>
-          <th>Location</th>
-        </tr>
+    <div class="content" *ngIf="content=='movie'">
+      <app-add-movies></app-add-movies>
+    </div>
 
-        <tr *ngFor="let item of locations">
-          <td>{{item.id}}</td>
-          <td>{{item.state}}</td>
-          <td>{{item.city}}</td>
-          <td>{{item.location}}</td>
-        </tr>
-      </table>
+    <div class="content" *ngIf="content=='location'">
+      <app-city-input></app-city-input>
+    </div>
+
+    <div class="content" *ngIf="content=='theater'">
+      <app-theator-input></app-theator-input>
+    </div>
+
+    <div class="content" *ngIf="content=='screen'">
+      <app-screen-input></app-screen-input>
+    </div>
+
+    <div class="content" *ngIf="content=='showtime'">
+      <app-showtime-input></app-showtime-input>
+    </div>
+
+    <div class="content" *ngIf="content=='seat'">
+      <app-seat-management></app-seat-management>
+    </div>
+
+    <div class="content" *ngIf="content=='admin'">
+      <app-admin-management></app-admin-management>
+    </div>
+
+    <div class="content" *ngIf="content=='business'">
+      <app-business-tracking></app-business-tracking>
     </div>
   </div>
-  <div class="content" *ngIf="content=='movie'">
-    <app-add-movies></app-add-movies>
-  </div>
-  <div class="content" *ngIf="content=='location'">
-    <app-city-input></app-city-input>
-  </div>
-  <div class="content" *ngIf="content=='theator'">
-    <app-theator-input></app-theator-input>
-  </div>
-  </div>
-</div>
+</div>

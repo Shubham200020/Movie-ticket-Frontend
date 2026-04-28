@@ -1,1 +1,28 @@
-<p>recomended-system works!</p>
+<div class="slideshow-container">
+
+  <!-- Slides -->
+  <div *ngFor="let slide of movie; let i = index"
+       class="slide"
+       [class.active]="i === currentIndex">
+
+    <div class="numbertext">{{ i + 1 }} / {{ movie.length }}</div>
+
+    <img [src]="(slide.widePosterData ? 'data:image/jpeg;base64,' + slide.widePosterData : (slide.widePosterUrl || 'assets/placeholder-wide.jpg')) | safeUrl" style="width:100%">
+
+    <div class="caption">{{ slide.caption }}</div>
+  </div>
+
+  <!-- Prev/Next Buttons -->
+  <a class="prev" (click)="prev()">❮</a>
+  <a class="next" (click)="next()">❯</a>
+
+</div>
+
+<!-- Dots -->
+<div class="dots">
+  <span *ngFor="let slide of movie; let i = index"
+        class="dot"
+        [class.active]="i === currentIndex"
+        (click)="goToSlide(i)">
+  </span>
+</div>

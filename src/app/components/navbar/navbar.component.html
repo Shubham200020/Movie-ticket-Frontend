@@ -1,12 +1,23 @@
-<nav class="navbar">
-  <div class="logo">🎬 MovieZone</div>
+<nav class="navbar glass-navbar">
+  <div class="logo" routerLink="/" style="cursor: pointer;">
+    🎬 <span class="brand">MovieZone</span>
+  </div>
 
-  <input type="text" placeholder="Search movies..." />
+  <div class="search-bar">
+    <input type="text" placeholder="Search movies, theatres..." />
+  </div>
 
   <div class="menu">
-    <span>Movies</span>
-    <span>Theatres</span>
-    <span (click)="login()" *ngIf="!isLoggedIn">Login</span>
-    <span (click)="logout()" *ngIf="isLoggedIn">Logout</span>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Movies</a>
+    <a routerLink="/theatres" routerLinkActive="active">Theatres</a>
+    <a routerLink="/dashboard" routerLinkActive="active" *ngIf="isAdmin">Dashboard</a>
+    
+    <div class="nav-actions">
+      <a routerLink="/login" class="btn-login" *ngIf="!isLoggedIn">Login</a>
+      <a (click)="logout()" class="btn-logout" *ngIf="isLoggedIn">Logout</a>
+      <a routerLink="/profile" class="profile-link" routerLinkActive="active" *ngIf="isLoggedIn" title="My Profile">
+        <div class="nav-avatar">{{ (user?.name ? user.name.charAt(0) : 'U') | uppercase }}</div>
+      </a>
+    </div>
   </div>
 </nav>

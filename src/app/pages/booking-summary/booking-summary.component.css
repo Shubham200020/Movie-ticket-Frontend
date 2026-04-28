@@ -1,0 +1,164 @@
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px;
+  background: radial-gradient(circle at center, #1e293b, #0f172a);
+}
+
+.ticket {
+  width: 400px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ticket-header {
+  background: var(--primary);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.status {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ticket-body {
+  padding: 30px;
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+/* Scalloped edges for ticket look */
+.ticket-body::after, .ticket-body::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  width: 20px;
+  height: 20px;
+  background: #0f172a;
+  border-radius: 50%;
+}
+
+.ticket-body::before { left: -10px; }
+.ticket-body::after { right: -10px; }
+
+.movie-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: var(--text-main);
+}
+
+.theater-details {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 25px;
+}
+
+.show-time, .seat-info, .user-info {
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ticket-footer {
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.barcode {
+  padding: 20px 30px 30px;
+  text-align: center;
+}
+
+.barcode-lines {
+  height: 40px;
+  background: repeating-linear-gradient(
+    90deg,
+    #fff,
+    #fff 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+
+.barcode-number {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.actions {
+  margin-top: 40px;
+  display: flex;
+  gap: 20px;
+}
+
+.btn-print, .btn-home {
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-print {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.btn-home {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-print:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+
+@media print {
+  .actions { display: none; }
+  .summary-container { background: white; padding: 0; }
+  .ticket { box-shadow: none; border: 1px solid #ddd; color: black; }
+  .movie-title, .value, .amount { color: black; }
+  .label, .theater-details { color: #666; }
+  .barcode-lines { background: repeating-linear-gradient(90deg, #000, #000 1px, transparent 1px, transparent 4px); }
+}

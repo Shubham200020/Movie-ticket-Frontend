@@ -1,33 +1,69 @@
-<div class="screen">SCREEN THIS WAY</div>
-
-<div class="seat-container">
-
-  <div class="row" *ngFor="let row of rows">
-    
-    <div class="row-label">{{ row }}</div>
-
-    <div class="seats">
-      <div 
-        *ngFor="let seat of seats[row]"
-        class="seat"
-        [ngClass]="{
-          'available': seat.status === 'available' && !isSelected(row, seat),
-          'selected': isSelected(row, seat),
-          'sold': seat.status === 'sold'
-        }"
-        (click)="toggleSeat(row, seat)"
-      >
-        {{ seat.number }}
-      </div>
+<div class="seat-selection-container">
+  
+  <!-- Header Bar -->
+  <div class="header-bar glass">
+    <button class="back-btn" (click)="router.navigate(['/movie', showtime?.movieId])">←</button>
+    <div class="movie-details" *ngIf="showtime">
+      <h3>{{ showtime.movie?.title }}</h3>
+      <p>{{ showtime.screen?.name }} | {{ showtime.startTime | date:'EEE, dd MMM | hh:mm a' }}</p>
     </div>
-
+    <div class="close-btn" (click)="router.navigate(['/'])">✕</div>
   </div>
 
-</div>
+  <!-- Main Content -->
+  <div class="grid-content">
+    
+    <!-- Legend (Top) -->
+    <div class="top-legend">
+      <div class="legend-item"><span class="box available"></span> Available</div>
+      <div class="legend-item"><span class="box selected"></span> Selected</div>
+      <div class="legend-item"><span class="box sold"></span> Sold</div>
+    </div>
 
-<!-- Legend -->
-<div class="legend">
-  <div><span class="box available"></span> Available</div>
-  <div><span class="box selected"></span> Selected</div>
-  <div><span class="box sold"></span> Sold</div>
+    <!-- Screen -->
+    <div class="screen-wrapper">
+      <div class="screen-curve"></div>
+      <p>All eyes this way please!</p>
+    </div>
+
+    <!-- Seats Grid -->
+    <div class="seat-grid-wrapper">
+      <div class="row" *ngFor="let row of rows">
+        <div class="row-label">{{ row }}</div>
+        <div class="seats">
+          <div 
+            *ngFor="let seat of seatsByRow[row]"
+            class="seat-wrapper"
+            [ngClass]="(seat.seatType || '').toLowerCase()"
+          >
+            <div 
+              class="seat"
+              [ngClass]="{
+                'available': seat.status === 'available' && !isSelected(seat.id),
+                'selected': isSelected(seat.id),
+                'sold': seat.status === 'sold'
+              }"
+              (click)="toggleSeat(seat)"
+              [title]="seat.seatType + ' - ₹' + getSeatPrice(seat.seatType)"
+            >
+              {{ seat.number }}
+            </div>
+          </div>
+        </div>
+        <div class="row-label">{{ row }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Bar -->
+  <div class="action-bar glass" *ngIf="selectedSeats.length > 0">
+    <div class="selection-info">
+      <div class="count">{{ selectedSeats.length }} Seats Selected</div>
+      <div class="total-price">Total: <span>₹{{ getTotalPrice() | number:'1.2-2' }}</span></div>
+    </div>
+    <button class="btn-confirm" (click)="confirmBooking()">
+      Confirm Booking
+    </button>
+  </div>
+
 </div>

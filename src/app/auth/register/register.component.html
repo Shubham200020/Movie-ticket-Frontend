@@ -1,6 +1,16 @@
 <div class="register-container">
   <h2>Create Account</h2>
 
+  <!-- 🚨 Error Message -->
+  <div class="alert alert-error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- ✅ Success Message -->
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
   <form (ngSubmit)="register()" #registerForm="ngForm">
 
     <input 
