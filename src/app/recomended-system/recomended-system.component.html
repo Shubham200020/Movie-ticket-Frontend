@@ -7,7 +7,7 @@
 
     <div class="numbertext">{{ i + 1 }} / {{ movie.length }}</div>
 
-    <img [src]="(slide.widePosterData ? 'data:image/jpeg;base64,' + slide.widePosterData : (slide.widePosterUrl || 'assets/placeholder-wide.jpg')) | safeUrl" style="width:100%">
+    <img [src]="(slide.widePosterData ? 'data:image/jpeg;base64,' + slide.widePosterData : (slide.widePosterUrl || 'assets/placeholder-wide.jpg')) | safeUrl" style="width:100%; cursor: pointer;" (click)="goToMovie(slide)">
 
     <div class="caption">{{ slide.caption }}</div>
   </div>

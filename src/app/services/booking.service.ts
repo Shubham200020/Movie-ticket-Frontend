@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Booking } from '../models/models';
 
 export interface CreateBookingDto {
-  userId: number;
+  userId?: number;
+  adminId?: number;
   showtimeId: number;
   seatIds: number[];
 }
@@ -16,7 +18,6 @@ export interface BillResponse {
   theaterName: string;
   showtime: string;
   seats: string[];
-  basePrice: number;
   seatCount: number;
   totalAmount: number;
   status: string;
@@ -28,7 +29,7 @@ export interface BillResponse {
   providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = 'https://localhost:7061/api/Booking';
+  private apiUrl = 'http://localhost:5002/api/Booking';
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +38,21 @@ export class BookingService {
   }
 
   getBill(bookingId: number): Observable<BillResponse> {
-    return this.http.get<BillResponse>(`${this.apiUrl}/${bookingId}`);
+    return this.http.get<any>(`${this.apiUrl}/${bookingId}`).pipe(
+      map(raw => ({
+        bookingId: raw.id,
+        movieTitle: raw.showtime?.movie?.title || 'Unknown Movie',
+        screenName: raw.showtime?.screen?.name || 'Unknown Screen',
+        theaterName: raw.showtime?.screen?.theater?.name || 'Unknown Theater',
+        showtime: raw.showtime?.startTime,
+        seats: raw.selectedSeats?.map((s: any) => `${s.seat?.row}${s.seat?.number}`) || [],
+        seatCount: raw.selectedSeats?.length || 0,
+        totalAmount: raw.totalAmount,
+        status: raw.status,
+        bookingTime: raw.bookingTime,
+        userName: raw.user?.name || raw.admin?.name || 'Guest User'
+      }))
+    );
   }
 
   createBooking(bookingData: CreateBookingDto): Observable<any> {

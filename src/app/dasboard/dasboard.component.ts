@@ -49,16 +49,13 @@ export class DasboardComponent implements OnInit {
     this.getShowCount().subscribe(count => this.showCount = count);
     this.getSeatCount().subscribe(count => this.seatCount = count);
 
-    if(this.user.role === 'user' || this.user.role === undefined){
-        this.router.navigate(['/']);
-    }
     this.service.getAll().subscribe(res => this.locations = res);
   }
 
-  private movieApiUrl = 'https://localhost:7061/api/Movie';
-  private theaterApiUrl = 'https://localhost:7061/api/Theater';
-  private showtimeApiUrl = 'https://localhost:7061/api/Showtime';
-  private seatApiUrl = 'https://localhost:7061/api/Seats';
+  private movieApiUrl = 'http://localhost:5002/api/Movie';
+  private theaterApiUrl = 'http://localhost:5002/api/Theater';
+  private showtimeApiUrl = 'http://localhost:5002/api/Showtime';
+  private seatApiUrl = 'http://localhost:5002/api/Seats';
 
   getTheaterCount(): Observable<number> {
     return this.http.get<number>(`${this.theaterApiUrl}/theator-count`);

@@ -18,7 +18,7 @@ export class SeatGridComponent implements OnInit {
   showtimeId!: number;
   showtime?: Showtime;
   screen?: Screen;
-  rows: string[] = [];
+  categories: { type: string; price: number; rows: string[] }[] = [];
   seatsByRow: { [key: string]: any[] } = {};
   selectedSeats: number[] = []; // Store seat IDs
   bookedSeatIds: number[] = [];
@@ -64,11 +64,11 @@ export class SeatGridComponent implements OnInit {
   }
 
   organizeSeats(seats: Seat[]) {
-    const rowSet = new Set<string>();
     this.seatsByRow = {};
+    const categoryMap = new Map<string, { price: number, rows: Set<string> }>();
 
     seats.sort((a, b) => a.number - b.number).forEach(seat => {
-      rowSet.add(seat.row);
+      // Group by row
       if (!this.seatsByRow[seat.row]) {
         this.seatsByRow[seat.row] = [];
       }
@@ -76,11 +76,23 @@ export class SeatGridComponent implements OnInit {
         id: seat.id,
         number: seat.number,
         type: seat.seatType,
-        status: this.bookedSeatIds.includes(seat.id) ? 'sold' : 'available'
+        status: this.bookedSeatIds.includes(seat.id) ? 'sold' : 'available',
+        price: seat.price
       });
+
+      // Group into categories
+      const key = seat.seatType || 'Standard';
+      if (!categoryMap.has(key)) {
+        categoryMap.set(key, { price: seat.price || 0, rows: new Set() });
+      }
+      categoryMap.get(key)!.rows.add(seat.row);
     });
 
-    this.rows = Array.from(rowSet).sort();
+    this.categories = Array.from(categoryMap.entries()).map(([type, data]) => ({
+      type: type,
+      price: data.price,
+      rows: Array.from(data.rows).sort()
+    })).sort((a, b) => a.price - b.price); // Cheapest first (closest to screen)
   }
 
   getTotalPrice(): number {
@@ -89,19 +101,10 @@ export class SeatGridComponent implements OnInit {
     this.selectedSeats.forEach(id => {
       const seat = this.findSeatById(id);
       if (seat) {
-        total += this.getSeatPrice(seat.seatType);
+        total += (seat.price || 0);
       }
     });
     return total;
-  }
-
-  getSeatPrice(type: string): number {
-    const base = this.showtime?.basePrice || 0;
-    switch (type?.toLowerCase()) {
-      case 'platinum': return base * 2.0;
-      case 'gold': return base * 1.5;
-      default: return base;
-    }
   }
 
   findSeatById(id: number) {
@@ -141,10 +144,18 @@ export class SeatGridComponent implements OnInit {
     }
 
     const bookingData: CreateBookingDto = {
-      userId: user.id,
       showtimeId: this.showtimeId,
       seatIds: this.selectedSeats
     };
+
+    // Try to get ID from user.id or user.Id (fallback for C# serialization differences)
+    const activeId = user.id || user.Id;
+
+    if (user.role?.toLowerCase() === 'admin') {
+      bookingData.adminId = activeId;
+    } else {
+      bookingData.userId = activeId;
+    }
 
     this.bookingService.createBooking(bookingData).subscribe({
       next: (res) => {

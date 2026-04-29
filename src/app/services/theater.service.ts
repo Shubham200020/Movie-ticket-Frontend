@@ -5,7 +5,7 @@ import { Theater } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class TheaterService {
-  private apiUrl = 'https://localhost:7061/api/theater';
+  private apiUrl = 'http://localhost:5002/api/theater';
 
   constructor(private http: HttpClient) {}
 

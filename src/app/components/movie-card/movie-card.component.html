@@ -3,7 +3,7 @@
 
   <div class="movie-grid">
     <div class="movie-card" *ngFor="let i of movie">
-      <div class="overlay" (click)="goToMovie(i.id)">
+      <div class="overlay" (click)="goToMovie(i)">
 
       <div class="poster">
         <img [src]="(i.posterData ? 'data:image/jpeg;base64,' + i.posterData : (i.posterUrl || 'assets/placeholder.jpg')) | safeUrl" [alt]="i.title">
@@ -12,7 +12,10 @@
       <div class="info">
         <h3>{{ i.title }}</h3>
         <p class="genre">{{ i.genre }}</p>
-        <p class="rating">⭐ {{ i.rating }}</p>
+        <div class="rating">
+          <span class="star blink-effect">⭐</span>
+          <span class="rating-val">{{ i.rating | number:'1.1-1' }}/5</span>
+        </div>
       </div>
 </div>
     </div>

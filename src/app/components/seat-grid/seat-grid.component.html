@@ -28,7 +28,17 @@
 
     <!-- Seats Grid -->
     <div class="seat-grid-wrapper">
-      <div class="row" *ngFor="let row of rows">
+      <div class="category-block" *ngFor="let category of categories">
+        <div class="category-header">
+          <div class="line"></div>
+          <div class="title">
+            <span class="type">{{ category.type | uppercase }}</span>
+            <span class="price">₹{{ category.price }}</span>
+          </div>
+          <div class="line"></div>
+        </div>
+
+        <div class="row" *ngFor="let row of category.rows">
         <div class="row-label">{{ row }}</div>
         <div class="seats">
           <div 
@@ -44,13 +54,14 @@
                 'sold': seat.status === 'sold'
               }"
               (click)="toggleSeat(seat)"
-              [title]="seat.seatType + ' - ₹' + getSeatPrice(seat.seatType)"
+              [title]="seat.type + ' - ₹' + (seat.price || 0)"
             >
               {{ seat.number }}
             </div>
           </div>
         </div>
         <div class="row-label">{{ row }}</div>
+      </div>
       </div>
     </div>
   </div>

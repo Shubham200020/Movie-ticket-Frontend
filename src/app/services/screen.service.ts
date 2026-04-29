@@ -7,7 +7,7 @@ import { Screen } from '../models/models';
   providedIn: 'root'
 })
 export class ScreenService {
-  private apiUrl = 'https://localhost:7061/api/Screen';
+  private apiUrl = 'http://localhost:5002/api/Screen';
 
   constructor(private http: HttpClient) {}
 

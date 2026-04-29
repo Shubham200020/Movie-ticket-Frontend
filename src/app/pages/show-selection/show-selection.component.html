@@ -22,7 +22,8 @@
           <span class="heart">♡</span>
           <div>
             <h3>{{ theater.name }}</h3>
-            <p class="meta">📍 {{ theater.location || 'Premium Cinema' }} | 🍿 Food & Beverage</p>
+            <span class="nearby-badge" *ngIf="theater.isNearby">Nearby City</span>
+            <p class="meta">📍 {{ theater.location?.city || 'Local' }}, {{ theater.location?.location || 'Cinema' }} | 🍿 Food & Beverage</p>
           </div>
         </div>
         <div class="theater-tags">
@@ -39,7 +40,7 @@
         >
           <div class="time">{{ show.startTime | date:'hh:mm a' }}</div>
           <div class="screen-name">{{ show.screen?.name }}</div>
-          <div class="price-hint">From ₹{{ show.basePrice }}</div>
+          <div class="price-hint">View Seats</div>
         </div>
       </div>
       

@@ -6,7 +6,12 @@
     <div class="user-info">
       <h2>{{ user?.name }}</h2>
       <p class="email">{{ user?.email }}</p>
-      <span class="role-badge" [ngClass]="user?.role">{{ user?.role | titlecase }}</span>
+      <div class="header-actions">
+        <span class="role-badge" [ngClass]="user?.role">{{ user?.role | titlecase }}</span>
+        <button class="update-pwd-btn" (click)="togglePasswordModal()">
+          <i class="fas fa-key"></i> Update Password
+        </button>
+      </div>
     </div>
   </div>
 
@@ -40,7 +45,7 @@
           <div class="seats">
             <span class="label">Seats:</span>
             <div class="seat-badges">
-              <span class="seat-badge" *ngFor="let s of b.selectedSeats">{{ s.seat?.row }}{{ s.seat?.number }}</span>
+              <span class="seat-badge" *ngFor="let s of b.selectedSeats">{{ s.seat.row }}{{ s.seat.number }}</span>
             </div>
           </div>
           <div class="price-status">
@@ -48,6 +53,39 @@
             <div class="status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Update Modal -->
+  <div class="modal-overlay" *ngIf="showPasswordModal" (click)="togglePasswordModal()">
+    <div class="password-modal glass" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Update Password</h3>
+        <button class="close-btn" (click)="togglePasswordModal()">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" [(ngModel)]="passwordData.newPassword" placeholder="Minimum 6 characters">
+        </div>
+        
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <input type="password" [(ngModel)]="passwordData.confirmPassword" placeholder="Repeat new password">
+        </div>
+
+        <div class="message error" *ngIf="passwordError">{{ passwordError }}</div>
+        <div class="message success" *ngIf="passwordSuccess">{{ passwordSuccess }}</div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="togglePasswordModal()">Cancel</button>
+        <button class="btn-submit" (click)="updatePassword()" [disabled]="isUpdatingPassword">
+          <span *ngIf="!isUpdatingPassword">Update Password</span>
+          <span *ngIf="isUpdatingPassword"><i class="fas fa-circle-notch fa-spin"></i> Updating...</span>
+        </button>
       </div>
     </div>
   </div>

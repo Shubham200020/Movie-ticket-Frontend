@@ -10,9 +10,17 @@
       <h1>{{ data.title }}</h1>
 
       <div class="rating-box">
-        ⭐ <span>9.5/10</span>
-        <small>(350K+ Votes)</small>
-        <button class="rate-btn">Rate now</button>
+        <div class="star-rating-mini">
+          <div class="stars-bg">
+            <i class="fas fa-star" *ngFor="let s of [1,2,3,4,5]"></i>
+          </div>
+          <div class="stars-fg blink-effect" [style.width.%]="(data.rating * 20)">
+            <i class="fas fa-star" *ngFor="let s of [1,2,3,4,5]"></i>
+          </div>
+        </div>
+        <span class="rating-text">{{ data.rating | number:'1.1-1' }}/5</span>
+        <small>({{ reviews.length }} Reviews)</small>
+        <button *ngIf="!hasUserReviewed()" class="rate-btn" (click)="toggleReviewForm()">Rate now</button>
       </div>
 
       <p class="meta">
@@ -28,4 +36,86 @@
 </div>
 <div *ngIf="indication">
  <app-show-selection> </app-show-selection>
+</div>
+
+<div class="review-section container">
+  <!-- Feedback Modal -->
+  <div class="modal-overlay" *ngIf="showReviewForm" (click)="toggleReviewForm()">
+    <div class="review-modal glass" (click)="$event.stopPropagation()">
+      <div class="modal-content-wrapper" [class.success-active]="showSuccess">
+        <!-- Form View -->
+        <div class="form-view">
+          <div class="modal-header">
+            <h3>How was the movie?</h3>
+            <button class="close-btn" (click)="toggleReviewForm()">&times;</button>
+          </div>
+          
+          <div class="modal-body">
+          <div class="star-rating">
+            <div class="stars-container" 
+                 (mousemove)="updateHoverRating($event)" 
+                 (mouseleave)="hoverRating = 0"
+                 (click)="setRating(hoverRating)">
+              <!-- Background stars (gray) -->
+              <div class="stars-bg">
+                <i class="fas fa-star" *ngFor="let s of [1,2,3,4,5]"></i>
+              </div>
+              <!-- Foreground stars (gold) with clip-path/width -->
+              <div class="stars-fg" [style.width.%]="(hoverRating || newReview.rating) * 20">
+                <i class="fas fa-star" *ngFor="let s of [1,2,3,4,5]"></i>
+              </div>
+            </div>
+            <span class="rating-label">{{ (hoverRating || newReview.rating).toFixed(1) }} / 5.0</span>
+          </div>
+
+            <textarea [(ngModel)]="newReview.comment" 
+                      placeholder="Share your thoughts about the movie..." 
+                      class="review-textarea"></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn-submit-premium" (click)="submitReview()" [disabled]="isSubmitting">
+              <span *ngIf="!isSubmitting">Submit Feedback</span>
+              <span *ngIf="isSubmitting" class="loader-container">
+                <i class="fas fa-circle-notch fa-spin"></i> Analyzing...
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Success View -->
+        <div class="success-view">
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h2>Thank You!</h2>
+          <p>Your feedback helps us improve.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-list">
+    <h2>Reviews & Ratings</h2>
+    <div class="review-card glass" *ngFor="let review of reviews">
+      <div class="review-header">
+        <div class="user-info">
+          <div class="avatar">{{ review.userName?.charAt(0) }}</div>
+          <div class="name-date">
+            <strong>{{ review.userName }}</strong>
+            <span>{{ review.createdAt | date:'dd MMM yyyy' }}</span>
+          </div>
+        </div>
+        <div class="user-rating">⭐ {{ review.rating }}/5</div>
+      </div>
+      <div class="review-actions" *ngIf="isOwner(review)">
+        <button class="action-btn edit" (click)="editReview(review)"><i class="fas fa-edit"></i> Edit</button>
+        <button class="action-btn delete" (click)="deleteReview(review.id)"><i class="fas fa-trash"></i> Delete</button>
+      </div>
+      <p class="comment">{{ review.comment }}</p>
+    </div>
+    <div *ngIf="reviews.length === 0" class="no-reviews">
+      No reviews yet. Be the first to rate!
+    </div>
+  </div>
 </div>

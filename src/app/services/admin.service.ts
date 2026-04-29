@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AdminService {
 
-  private apiUrl = 'https://localhost:7061/api/AdminControllers';
+  private apiUrl = 'http://localhost:5002/api/AdminControllers';
 
   constructor(private http: HttpClient) {}
 

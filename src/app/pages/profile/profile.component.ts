@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { BookingService } from '../../services/booking.service';
 import { Booking } from '../../models/models';
@@ -9,7 +10,7 @@ import { SafeUrlPipe } from '../../services/safe-url.pipe';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, SafeUrlPipe],
+  imports: [CommonModule, SafeUrlPipe, FormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -19,6 +20,17 @@ export class ProfileComponent implements OnInit {
   allSystemBookings: Booking[] = [];
   isLoading = true;
   activeTab: 'personal' | 'system' = 'personal';
+
+  // Password Update State
+  showPasswordModal = false;
+  passwordData = {
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+  isUpdatingPassword = false;
+  passwordError = '';
+  passwordSuccess = '';
 
   constructor(
     private authService: AuthService,
@@ -39,9 +51,10 @@ export class ProfileComponent implements OnInit {
 
   loadPersonalBookings() {
     this.isLoading = true;
-    const url = this.user.role === 'admin' 
-      ? `https://localhost:7061/api/Booking/admin/${this.user.id}`
-      : `https://localhost:7061/api/Booking/user/${this.user.id}`;
+    const activeId = this.user.id || this.user.Id;
+    const url = this.user.role?.toLowerCase() === 'admin' 
+      ? `http://localhost:5002/api/Booking/admin/${activeId}`
+      : `http://localhost:5002/api/Booking/user/${activeId}`;
 
     this.http.get<Booking[]>(url).subscribe({
       next: (res) => {
@@ -53,7 +66,7 @@ export class ProfileComponent implements OnInit {
   }
 
   loadAllSystemBookings() {
-    this.http.get<Booking[]>('https://localhost:7061/api/Booking').subscribe({
+    this.http.get<Booking[]>('http://localhost:5002/api/Booking').subscribe({
       next: (res) => {
         this.allSystemBookings = res.sort((a, b) => new Date(b.bookingTime).getTime() - new Date(a.bookingTime).getTime());
       }
@@ -62,5 +75,58 @@ export class ProfileComponent implements OnInit {
 
   setTab(tab: 'personal' | 'system') {
     this.activeTab = tab;
+  }
+
+  togglePasswordModal() {
+    this.showPasswordModal = !this.showPasswordModal;
+    if (!this.showPasswordModal) {
+      this.resetPasswordForm();
+    }
+  }
+
+  resetPasswordForm() {
+    this.passwordData = { oldPassword: '', newPassword: '', confirmPassword: '' };
+    this.passwordError = '';
+    this.passwordSuccess = '';
+  }
+
+  updatePassword() {
+    if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+      this.passwordError = 'New passwords do not match';
+      return;
+    }
+
+    if (this.passwordData.newPassword.length < 6) {
+      this.passwordError = 'Password must be at least 6 characters';
+      return;
+    }
+
+    this.isUpdatingPassword = true;
+    this.passwordError = '';
+
+    // The backend PUT /api/User/{id} updates the user including password.
+    // We need to send the full user object or just what's required.
+    // Based on the backend code, it hashes whatever is in updatedUser.Password.
+    
+    const updateUrl = this.user.role === 'admin'
+      ? `http://localhost:5002/api/AdminControllers/${this.user.id}`
+      : `http://localhost:5002/api/User/${this.user.id}`;
+
+    const updatePayload = {
+      ...this.user,
+      password: this.passwordData.newPassword
+    };
+
+    this.http.put(updateUrl, updatePayload).subscribe({
+      next: () => {
+        this.passwordSuccess = 'Password updated successfully!';
+        this.isUpdatingPassword = false;
+        setTimeout(() => this.togglePasswordModal(), 2000);
+      },
+      error: (err) => {
+        this.passwordError = 'Failed to update password. Please try again.';
+        this.isUpdatingPassword = false;
+      }
+    });
   }
 }

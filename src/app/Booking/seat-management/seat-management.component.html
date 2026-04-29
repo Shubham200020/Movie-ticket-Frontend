@@ -46,6 +46,10 @@
           <option value="Platinum">Platinum</option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Seat Price (₹)</label>
+        <input type="number" [(ngModel)]="price" min="0">
+      </div>
     </div>
     
     <div class="actions">
@@ -59,7 +63,7 @@
     <div class="loading-spinner" *ngIf="isLoading">Loading...</div>
     
     <div class="seat-grid" *ngIf="!isLoading">
-      <div class="seat-preview" *ngFor="let seat of existingSeats" [ngClass]="(seat.seatType || '').toLowerCase()">
+      <div class="seat-preview" *ngFor="let seat of existingSeats" [ngClass]="(seat.seatType || '').toLowerCase()" [title]="'₹' + seat.price">
         {{ seat.row }}{{ seat.number }}
       </div>
     </div>

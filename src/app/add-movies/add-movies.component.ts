@@ -26,7 +26,7 @@ export class AddMoviesComponent implements OnInit {
   selectedPosterFile: File | null = null;
   selectedWidePosterFile: File | null = null;
 
-  private apiUrl = 'https://localhost:7061/api/movie';
+  private apiUrl = 'http://localhost:5002/api/movie';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.movieForm = this.fb.group({

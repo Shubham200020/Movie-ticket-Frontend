@@ -30,7 +30,7 @@ export class RegisterComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    this.http.post('https://localhost:7061/api/user', this.user)
+    this.http.post('http://localhost:5002/api/user', this.user)
       .subscribe({
         next: (res) => {
           this.successMessage = 'Registration Successful ✅ Redirecting to login...';

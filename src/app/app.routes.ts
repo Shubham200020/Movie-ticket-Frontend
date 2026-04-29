@@ -12,9 +12,11 @@ import { DasboardComponent } from './dasboard/dasboard.component';
 
 import { adminGuard } from './auth/admin.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { TheatresComponent } from './pages/theatres/theatres.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'theatres', component: TheatresComponent },
   { path: 'movie/:id', component: ShowCardComponent },
   { path: 'shows/:id', component: ShowSelectionComponent },
   { path: 'seats/:id', component: SeatGridComponent },

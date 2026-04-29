@@ -20,6 +20,8 @@ export interface Theater {
   locationId?: number;
   location?: AppLocation;
   screens?: Screen[];
+  isNearby?: boolean;
+  distance?: number;
 }
 
 export interface AppLocation {
@@ -33,6 +35,7 @@ export interface Screen {
   id: number;
   name: string;
   capacity: number;
+  screenType?: string;
   theaterId: number;
   theaterName?: string;
   theater?: Theater;
@@ -44,14 +47,15 @@ export interface Seat {
   row: string;
   number: number;
   screenId: number;
-  seatType: string; // Silver, Gold, Platinum
+  seatType: string;
+  price?: number;
+  isAvailable?: boolean;
 }
 
 export interface Showtime {
   id: number;
   startTime: string;
   endTime: string;
-  basePrice: number;
   movieId: number;
   movie?: Movie;
   screenId: number;
@@ -68,4 +72,15 @@ export interface Booking {
   adminId?: number;
   showtime?: Showtime;
   selectedSeats?: { seat: Seat }[];
+}
+
+export interface Review {
+  id?: number;
+  movieId: number;
+  userId?: number;
+  adminId?: number;
+  rating: number;
+  comment: string;
+  createdAt?: string;
+  userName?: string;
 }

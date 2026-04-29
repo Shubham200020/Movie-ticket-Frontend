@@ -28,14 +28,13 @@ export class MovieCardComponent {
   indicator:boolean=false;
   
 
-  private apiUrl = 'https://localhost:7061/api/movie';
+  private apiUrl = 'http://localhost:5002/api/movie';
   movie:any = [];
   constructor(private http: HttpClient,private router: Router) {
     this.loadMovies();
   }
-  goToMovie(id:any){
-  this.router.navigate(['/movie', id]);
-
+  goToMovie(movie:any){
+    this.router.navigate(['/movie', movie.id], { state: { movie } });
   }
 nextCompnent(data:any){
   this.id=data
@@ -44,9 +43,9 @@ this.indicator=!this.indicator
 }
  
    loadMovies() {
-    this.http.get<Movie>(this.apiUrl).subscribe({
+    this.http.get<any[]>(this.apiUrl).subscribe({
       next: (response) => {
-        this.movie = response;   // ✅ storing API data here
+        this.movie = response.filter(m => m.running === true);
         console.log('Movies:', this.movie);
       },
       error: (error) => {

@@ -22,20 +22,20 @@ export class RecomendedSystemComponent implements OnInit{
   this.loadMovies()
   }
   
-    private apiUrl = 'https://localhost:7061/api/movie/recomened';
+    private apiUrl = 'http://localhost:5002/api/movie/recomened';
    
     constructor(private http: HttpClient,private router: Router) {
       
     }
 
-     goToMovie(id:any){
-  this.router.navigate(['/movie', id]);
-
+  goToMovie(movie:any){
+    this.router.navigate(['/movie', movie.id], { state: { movie } });
   }
   loadMovies() {
-      this.http.get<Movie>(this.apiUrl).subscribe({
+      this.http.get<any[]>(this.apiUrl).subscribe({
         next: (response) => {
-          this.movie = response;   // ✅ storing API data here
+          // Double filter on frontend to ensure immediate update and catch any caching
+          this.movie = response.filter(m => m.running === true);
           console.log('Movies:', this.movie);
         },
         error: (error) => {

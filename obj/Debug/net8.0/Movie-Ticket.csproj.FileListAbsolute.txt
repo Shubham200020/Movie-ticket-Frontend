@@ -4,3 +4,4 @@ D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.A
 D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.AssemblyInfo.cs
 D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.csproj.CoreCompileInputs.cache
 D:\project Meterial\Collage project\Movie-Ticket\obj\Debug\net8.0\Movie-Ticket.MvcApplicationPartsAssemblyInfo.cache
+D:\project Meterial\Collage project\movie-ticket\obj\Debug\net8.0\Movie-Ticket.sourcelink.json

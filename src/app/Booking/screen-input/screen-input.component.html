@@ -13,6 +13,16 @@
     </div>
 
     <div class="form-group">
+      <select formControlName="screenType">
+        <option value="2D">2D</option>
+        <option value="3D">3D</option>
+        <option value="IMAX">IMAX</option>
+        <option value="4DX">4DX</option>
+        <option value="ScreenX">ScreenX</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <select formControlName="theaterId">
         <option value="">Select Theater</option>
         <option *ngFor="let t of theaters" [value]="t.id">
@@ -35,10 +45,31 @@
 
   <hr>
 
+  <div class="filter-bar" style="margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+    <!-- State Filter -->
+    <select [(ngModel)]="filterState" (change)="onStateChange()" style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
+      <option value="">All States</option>
+      <option *ngFor="let state of uniqueStates" [value]="state">{{ state }}</option>
+    </select>
+
+    <!-- City Filter -->
+    <select [(ngModel)]="filterCity" (change)="onCityChange()" [disabled]="!filterState && availableCities.length === 0" style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
+      <option value="">All Cities</option>
+      <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+    </select>
+
+    <!-- Theater Filter -->
+    <select [(ngModel)]="filterTheaterId" [disabled]="!filterCity && availableTheaters.length === 0" style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
+      <option value="">All Theaters</option>
+      <option *ngFor="let t of availableTheaters" [value]="t.id">{{ t.name }}</option>
+    </select>
+  </div>
+
   <table class="table">
     <thead>
       <tr>
         <th>Name</th>
+        <th>Type</th>
         <th>Capacity</th>
         <th>Theater</th>
         <th>Action</th>
@@ -46,10 +77,11 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let s of screens">
+      <tr *ngFor="let s of filteredScreens">
         <td>{{ s.name }}</td>
+        <td><span class="badge">{{ s.screenType || '2D' }}</span></td>
         <td>{{ s.capacity }}</td>
-        <td>{{ s.theaterName }}</td>
+        <td>{{ s.theaterName }} ({{ s.city }})</td>
         <td>
           <button class="edit-btn" (click)="editScreen(s)">Edit</button>
           <button class="delete-btn" (click)="deleteScreen(s.id)">Delete</button>

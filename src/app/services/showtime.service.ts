@@ -7,7 +7,7 @@ import { Showtime } from '../models/models';
   providedIn: 'root'
 })
 export class ShowtimeService {
-  private apiUrl = 'https://localhost:7061/api/Showtime';
+  private apiUrl = 'http://localhost:5002/api/Showtime';
 
   constructor(private http: HttpClient) {}
 

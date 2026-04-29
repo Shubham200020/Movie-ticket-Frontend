@@ -30,7 +30,6 @@ export class ShowtimeInputComponent implements OnInit {
     this.showtimeForm = this.fb.group({
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
-      basePrice: ['', [Validators.required, Validators.min(0)]],
       movieId: ['', Validators.required],
       screenId: ['', Validators.required]
     });
@@ -45,11 +44,11 @@ export class ShowtimeInputComponent implements OnInit {
   }
 
   loadMovies() {
-    this.http.get<any[]>('https://localhost:7061/api/Movie').subscribe(res => this.movies = res);
+    this.http.get<any[]>('http://localhost:5002/api/Movie').subscribe(res => this.movies = res);
   }
 
   loadScreens() {
-    this.http.get<any[]>('https://localhost:7061/api/screen').subscribe(res => this.screens = res);
+    this.http.get<any[]>('http://localhost:5002/api/screen').subscribe(res => this.screens = res);
   }
 
   onSubmit() {
@@ -85,7 +84,6 @@ export class ShowtimeInputComponent implements OnInit {
     this.showtimeForm.patchValue({
       startTime: start,
       endTime: end,
-      basePrice: showtime.basePrice,
       movieId: showtime.movieId,
       screenId: showtime.screenId
     });

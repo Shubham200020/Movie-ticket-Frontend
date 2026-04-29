@@ -23,11 +23,12 @@ export class SeatManagementComponent implements OnInit {
   startNumber: number = 1;
   endNumber: number = 10;
   seatType: string = 'Silver';
+  price: number = 100;
   
   existingSeats: Seat[] = [];
   isLoading = false;
 
-  private seatApiUrl = 'https://localhost:7061/api/Seats';
+  private seatApiUrl = 'http://localhost:5002/api/Seats';
 
   constructor(
     private theaterService: TheaterService,
@@ -87,7 +88,8 @@ export class SeatManagementComponent implements OnInit {
       row: this.rowLetter.toUpperCase(),
       startNumber: this.startNumber,
       endNumber: this.endNumber,
-      seatType: this.seatType
+      seatType: this.seatType,
+      price: this.price
     };
 
     this.http.post(`${this.seatApiUrl}/bulk`, dto).subscribe({
