@@ -14,6 +14,29 @@
     </div>
   </div>
 
+  <!-- Sorting Controls -->
+  <div class="sorting-controls container">
+    <div class="sort-group">
+      <button 
+        class="sort-btn" 
+        [class.active]="sortBy === 'location'"
+        (click)="setSortMode('location')"
+      >
+        <i class="fas fa-map-marker-alt"></i> Nearest Location
+      </button>
+      <button 
+        class="sort-btn" 
+        [class.active]="sortBy === 'time'"
+        (click)="setSortMode('time')"
+      >
+        <i class="fas fa-clock"></i> Nearest Show Time
+      </button>
+    </div>
+    <div class="gps-status" *ngIf="gpsActive">
+      <span class="dot"></span> GPS Active
+    </div>
+  </div>
+
   <!-- Theater List -->
   <div class="theater-list">
     <div class="theater-card glass" *ngFor="let theater of theatersWithShows">
@@ -22,7 +45,12 @@
           <span class="heart">♡</span>
           <div>
             <h3>{{ theater.name }}</h3>
-            <span class="nearby-badge" *ngIf="theater.isNearby">Nearby City</span>
+            <div class="badges">
+              <span class="nearby-badge" *ngIf="theater.isNearby">Nearby City</span>
+              <span class="distance-badge" *ngIf="theater.distance">
+                {{ theater.distance | number:'1.1-1' }} km away
+              </span>
+            </div>
             <p class="meta">📍 {{ theater.location?.city || 'Local' }}, {{ theater.location?.location || 'Cinema' }} | 🍿 Food & Beverage</p>
           </div>
         </div>

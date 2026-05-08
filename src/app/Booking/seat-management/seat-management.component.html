@@ -20,6 +20,25 @@
   </div>
 
   <div class="config-section" *ngIf="selectedScreenId">
+    <div class="capacity-status-bar glass">
+      <div class="stat">
+        <span class="label">Total Capacity</span>
+        <span class="value">{{ totalCapacity }}</span>
+      </div>
+      <div class="stat">
+        <span class="label">Seats Created</span>
+        <span class="value">{{ existingSeats.length }}</span>
+      </div>
+      <div class="stat" [class.danger]="remainingCapacity <= 0">
+        <span class="label">Capacity Left</span>
+        <span class="value">{{ remainingCapacity }}</span>
+      </div>
+    </div>
+
+    <div class="capacity-warning" *ngIf="remainingCapacity < (endNumber - startNumber + 1) && (endNumber - startNumber + 1) > 0">
+      ⚠️ This row ({{ endNumber - startNumber + 1 }} seats) exceeds the remaining capacity ({{ remainingCapacity }}).
+    </div>
+
     <div class="header-with-action">
       <h3>Generate Row</h3>
       <button class="btn-delete-all" (click)="deleteAllSeats()" *ngIf="existingSeats.length > 0">Clear Screen</button>
@@ -59,7 +78,23 @@
 
   <!-- Preview Section -->
   <div class="preview-section" *ngIf="selectedScreenId">
-    <h3>Current Layout ({{ existingSeats.length }} seats)</h3>
+    <div class="preview-header">
+      <h3>Current Layout ({{ existingSeats.length }} seats)</h3>
+      <div class="status-badge" [class.match]="existingSeats.length === totalCapacity" [class.mismatch]="existingSeats.length !== totalCapacity">
+        {{ existingSeats.length === totalCapacity ? '✓ Capacity Matched' : '⚠ Capacity Mismatch' }}
+      </div>
+    </div>
+
+    <div class="capacity-info-box" *ngIf="existingSeats.length !== totalCapacity">
+      <p *ngIf="existingSeats.length < totalCapacity">
+        You have generated <strong>{{ existingSeats.length }}</strong> seats, but the screen capacity is <strong>{{ totalCapacity }}</strong>. 
+        Please add <strong>{{ totalCapacity - existingSeats.length }}</strong> more seats.
+      </p>
+      <p *ngIf="existingSeats.length > totalCapacity" class="danger">
+        Error: Total seats ({{ existingSeats.length }}) exceeds screen capacity ({{ totalCapacity }}). 
+        Please delete some seats or update screen capacity.
+      </p>
+    </div>
     <div class="loading-spinner" *ngIf="isLoading">Loading...</div>
     
     <div class="seat-grid" *ngIf="!isLoading">

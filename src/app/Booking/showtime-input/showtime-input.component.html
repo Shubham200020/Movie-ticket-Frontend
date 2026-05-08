@@ -16,10 +16,34 @@
         </div>
 
         <div class="form-group">
+          <label>State</label>
+          <select formControlName="state">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <select formControlName="city">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Theater</label>
+          <select formControlName="theaterId">
+            <option value="">Select Theater</option>
+            <option *ngFor="let theater of filteredTheaters" [value]="theater.id">{{ theater.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label>Screen</label>
           <select formControlName="screenId">
             <option value="">Select Screen</option>
-            <option *ngFor="let screen of screens" [value]="screen.id">{{ screen.name }}</option>
+            <option *ngFor="let screen of filteredScreens" [value]="screen.id">{{ screen.name }}</option>
           </select>
         </div>
 

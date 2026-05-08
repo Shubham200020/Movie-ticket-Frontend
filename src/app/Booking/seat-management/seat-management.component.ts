@@ -27,6 +27,9 @@ export class SeatManagementComponent implements OnInit {
   
   existingSeats: Seat[] = [];
   isLoading = false;
+  
+  totalCapacity: number = 0;
+  remainingCapacity: number = 0;
 
   private seatApiUrl = 'http://localhost:5002/api/Seats';
 
@@ -47,6 +50,8 @@ export class SeatManagementComponent implements OnInit {
   onTheaterChange() {
     this.selectedScreenId = null;
     this.existingSeats = [];
+    this.totalCapacity = 0;
+    this.remainingCapacity = 0;
     if (this.selectedTheaterId) {
       this.screenService.getAll().subscribe(res => {
         this.screens = res.filter(s => s.theaterId == this.selectedTheaterId);
@@ -56,9 +61,13 @@ export class SeatManagementComponent implements OnInit {
 
   onScreenChange() {
     if (this.selectedScreenId) {
+      const selectedScreen = this.screens.find(s => s.id == this.selectedScreenId);
+      this.totalCapacity = selectedScreen?.capacity || 0;
       this.loadExistingSeats();
     } else {
       this.existingSeats = [];
+      this.totalCapacity = 0;
+      this.remainingCapacity = 0;
     }
   }
 
@@ -71,15 +80,30 @@ export class SeatManagementComponent implements OnInit {
           if (a.row > b.row) return 1;
           return a.number - b.number;
         });
+        this.remainingCapacity = this.totalCapacity - this.existingSeats.length;
         this.isLoading = false;
       },
-      error: () => this.isLoading = false
+      error: () => {
+        this.isLoading = false;
+        this.remainingCapacity = this.totalCapacity;
+      }
     });
   }
 
   generateSeats() {
     if (!this.selectedScreenId) {
       alert('Please select a screen first ❌');
+      return;
+    }
+
+    const requestedCount = this.endNumber - this.startNumber + 1;
+    if (requestedCount <= 0) {
+      alert('Invalid seat range ❌');
+      return;
+    }
+
+    if (requestedCount > this.remainingCapacity) {
+      alert(`Cannot generate ${requestedCount} seats. Only ${this.remainingCapacity} spaces left in this screen! ❌`);
       return;
     }
 

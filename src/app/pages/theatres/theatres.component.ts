@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TheaterService } from '../../services/theater.service';
 import { LocationService } from '../../services/location.service';
+import { ShowtimeService } from '../../services/showtime.service';
 import { Theater } from '../../models/models';
 import { Coordinates } from '../../services/location.service';
 import { Router } from '@angular/router';
@@ -15,6 +16,22 @@ import { Router } from '@angular/router';
       <div class="header glass">
         <h1>Theatres in {{ currentCity }}</h1>
         <p *ngIf="isNearby">No theatres found in {{ currentCity }}. Showing all available cities.</p>
+        
+        <!-- Sorting Controls -->
+        <div class="sorting-options">
+          <button 
+            [class.active]="sortBy === 'location'" 
+            (click)="setSortMode('location')"
+          >
+            📍 Nearest Location
+          </button>
+          <button 
+            [class.active]="sortBy === 'time'" 
+            (click)="setSortMode('time')"
+          >
+            🕒 Nearest Show Time
+          </button>
+        </div>
       </div>
 
       <div class="theater-list">
@@ -31,6 +48,10 @@ import { Router } from '@angular/router';
                   📍 {{ theater.location?.location }}, {{ theater.location?.city }}
                   <span *ngIf="theater.distance !== undefined" class="distance-badge">• {{ theater.distance | number:'1.1-1' }} km away</span>
                 </p>
+                <!-- Earliest Show Display -->
+                <p class="next-show" *ngIf="theater.earliestShowTime">
+                  Next Show: <span>{{ theater.earliestShowTime | date:'shortTime' }}</span>
+                </p>
               </div>
             </div>
             <div class="theater-tags">
@@ -39,7 +60,7 @@ import { Router } from '@angular/router';
             </div>
           </div>
           <div class="actions">
-            <button class="btn-explore">View Schedule</button>
+            <button class="btn-explore" (click)="viewSchedule(theater)">View Schedule</button>
           </div>
         </div>
       </div>
@@ -69,7 +90,37 @@ import { Router } from '@angular/router';
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .header p { color: #f59e0b; font-size: 0.9rem; }
+    .header p { color: #f59e0b; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .sorting-options {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .sorting-options button {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #888;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+    .sorting-options button.active {
+      background: #e50914;
+      color: white;
+      border-color: #e50914;
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+    }
+    .next-show {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+    .next-show span {
+      color: #4ade80;
+      font-weight: 600;
+    }
     .glass {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
@@ -138,15 +189,18 @@ import { Router } from '@angular/router';
 })
 export class TheatresComponent implements OnInit {
   allTheaters: Theater[] = [];
-  filteredTheaters: Theater[] = [];
+  filteredTheaters: any[] = [];
+  allShowtimes: any[] = [];
   currentCity: string = '';
   currentArea: string = '';
   isNearby: boolean = false;
   userCoords: Coordinates | null = null;
+  sortBy: 'location' | 'time' = 'location';
 
   constructor(
     private theaterService: TheaterService,
     private locationService: LocationService,
+    private showtimeService: ShowtimeService,
     private router: Router
   ) {}
 
@@ -161,8 +215,8 @@ export class TheatresComponent implements OnInit {
       this.applyFilter();
     });
 
-    this.locationService.currentArea$.subscribe(area => {
-      this.currentArea = area;
+    this.showtimeService.getShowtimes().subscribe(res => {
+      this.allShowtimes = res;
       this.applyFilter();
     });
 
@@ -172,49 +226,61 @@ export class TheatresComponent implements OnInit {
     });
   }
 
-  goToMovie(movie: any) {
-    this.router.navigate(['/movie', movie.id], { state: { movie } });
+  setSortMode(mode: 'location' | 'time') {
+    this.sortBy = mode;
+    this.applyFilter();
+  }
+
+  viewSchedule(theater: any) {
+    this.router.navigate(['/theaters', theater.id]);
   }
 
   async applyFilter() {
     if (!this.allTheaters.length) return;
 
     const cityLower = this.currentCity.toLowerCase();
+    const now = new Date().getTime();
     
-    // First, calculate GPS distances for all theaters if we have user coordinates
-    if (this.userCoords) {
-      for (let t of this.allTheaters) {
-        if (!t.location?.location || !t.location?.city) continue;
-        const address = `${t.location.location}, ${t.location.city}`;
-        const coords = await this.locationService.getCoordinates(address);
-        if (coords) {
-          t.distance = this.locationService.calculateDistance(this.userCoords, coords);
-        } else {
-          t.distance = 9999; // Fallback for unknown locations
-        }
+    const processed = await Promise.all(this.allTheaters.map(async t => {
+      const coords = await this.locationService.getTheaterCoordinates(t);
+      let dist = undefined;
+      
+      if (coords && this.userCoords) {
+        dist = this.locationService.calculateDistance(
+          { lat: this.userCoords.lat, lon: this.userCoords.lon },
+          coords
+        );
       }
-    }
 
-    let inCityTheaters = this.allTheaters.filter(t => t.location?.city?.toLowerCase() === cityLower);
-    let others = this.allTheaters.filter(t => t.location?.city?.toLowerCase() !== cityLower);
+      const theaterShows = this.allShowtimes.filter(s => s.screen?.theaterId === t.id);
+      const futureShows = theaterShows
+        .map(s => new Date(s.startTime).getTime())
+        .filter(time => time > now);
+      
+      const earliestTime = futureShows.length > 0 ? Math.min(...futureShows) : Infinity;
 
-    // Sort by GPS distance
-    if (inCityTheaters.length > 1) {
-      inCityTheaters = inCityTheaters.sort((a, b) => {
+      return {
+        ...t,
+        distance: dist,
+        earliestShowTime: earliestTime !== Infinity ? earliestTime : null,
+        isNearby: t.location?.city?.toLowerCase() !== cityLower
+      };
+    }));
+
+    let inCityTheaters = processed.filter(t => !t.isNearby);
+    let others = processed.filter(t => t.isNearby);
+
+    const sortFn = (a: any, b: any) => {
+      if (this.sortBy === 'location') {
         return (a.distance ?? 9999) - (b.distance ?? 9999);
-      });
-    }
+      } else {
+        return (a.earliestShowTime ?? Infinity) - (b.earliestShowTime ?? Infinity);
+      }
+    };
 
-    if (others.length > 1) {
-      others = others.sort((a, b) => {
-        return (a.distance ?? 9999) - (b.distance ?? 9999);
-      });
-    }
-
-    // Combine them (matched city first)
     this.filteredTheaters = [
-      ...inCityTheaters.map(t => ({ ...t, isNearby: false })),
-      ...others.map(t => ({ ...t, isNearby: true }))
+      ...inCityTheaters.sort(sortFn),
+      ...others.sort(sortFn)
     ];
     
     this.isNearby = inCityTheaters.length === 0;

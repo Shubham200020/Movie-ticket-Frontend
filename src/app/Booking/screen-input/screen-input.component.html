@@ -47,19 +47,22 @@
 
   <div class="filter-bar" style="margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px;">
     <!-- State Filter -->
-    <select [(ngModel)]="filterState" (change)="onStateChange()" style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
+    <select [(ngModel)]="filterState" (change)="onStateChange()"
+      style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
       <option value="">All States</option>
       <option *ngFor="let state of uniqueStates" [value]="state">{{ state }}</option>
     </select>
 
     <!-- City Filter -->
-    <select [(ngModel)]="filterCity" (change)="onCityChange()" [disabled]="!filterState && availableCities.length === 0" style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
+    <select [(ngModel)]="filterCity" (change)="onCityChange()" [disabled]="!filterState && availableCities.length === 0"
+      style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
       <option value="">All Cities</option>
       <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
     </select>
 
     <!-- Theater Filter -->
-    <select [(ngModel)]="filterTheaterId" [disabled]="!filterCity && availableTheaters.length === 0" style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
+    <select [(ngModel)]="filterTheaterId" [disabled]="!filterCity && availableTheaters.length === 0"
+      style="padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.2);">
       <option value="">All Theaters</option>
       <option *ngFor="let t of availableTheaters" [value]="t.id">{{ t.name }}</option>
     </select>

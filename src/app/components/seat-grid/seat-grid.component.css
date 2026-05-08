@@ -84,7 +84,7 @@
 .screen-wrapper {
   width: 80%;
   max-width: 600px;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
   text-align: center;
 }
 
@@ -109,24 +109,54 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 60px 40px;
+  scrollbar-width: none;
+  background: radial-gradient(circle at top center, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+}
+
+.seat-grid-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .row {
   display: flex;
   align-items: center;
+  justify-content: center; /* Ensure row is centered */
   gap: 15px;
+  padding: 20px 0;
+  min-height: 120px;
+  min-width: max-content; /* Prevent shrinking */
 }
 
 .row-label {
   width: 25px;
-  font-weight: 600;
-  color: #475569;
-  font-size: 14px;
+  font-weight: 700;
+  color: #94a3b8;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transform: translateY(-12px);
+  text-align: center;
 }
 
 .seats {
   display: flex;
   gap: 10px;
+  align-items: center;
+}
+
+.seat-wrapper {
+  --middle: calc((var(--total-seats) - 1) / 2);
+  --diff: calc(var(--seat-index) - var(--middle));
+  /* Refined 'Smile' curve for a more professional feel */
+  --curve-y: calc(var(--diff) * var(--diff) * -0.35px);
+  /* Very subtle rotation */
+  --rotation: calc(var(--diff) * -0.5deg);
+  
+  transform: translateY(var(--curve-y)) rotate(var(--rotation));
+  transform-origin: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .seat {
@@ -300,4 +330,9 @@
   .seat { width: 26px; height: 26px; font-size: 9px; }
   .row-label { font-size: 12px; width: 20px; }
   .top-legend { gap: 15px; }
+  .row { min-height: 80px; }
+  .seat-wrapper {
+    --curve-y: calc(var(--diff) * var(--diff) * -0.25px);
+    --rotation: calc(var(--diff) * -0.3deg);
+  }
 }

@@ -22,6 +22,8 @@ export interface Theater {
   screens?: Screen[];
   isNearby?: boolean;
   distance?: number;
+  lat?: number;
+  lng?: number;
 }
 
 export interface AppLocation {

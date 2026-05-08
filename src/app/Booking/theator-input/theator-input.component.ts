@@ -19,8 +19,9 @@ export class TheatorInputComponent implements OnInit {
   form: any = {
     id: 0,
     name: '',
-   
-    locationId:0
+    locationId: 0,
+    lat: null,
+    lng: null
   };
 
   isEdit = false; // Added to track state
@@ -69,13 +70,15 @@ export class TheatorInputComponent implements OnInit {
   }
 
   edit(item: Theater) {
-   this.form = {
-    id: item.id,
-    name: item.name,
-    locationId: item.locationId || item.location?.id
-  };
-  this.isEdit = true;
-}
+    this.form = {
+      id: item.id,
+      name: item.name,
+      locationId: item.locationId || item.location?.id,
+      lat: item.lat,
+      lng: item.lng
+    };
+    this.isEdit = true;
+  }
 
   delete(id: number) {
     if(confirm('Delete theater?')) {
@@ -84,6 +87,7 @@ export class TheatorInputComponent implements OnInit {
   }
 
   reset() {
-  this.form = { id: 0, name: '', locationId: 0 };
-}
+    this.form = { id: 0, name: '', locationId: 0, lat: null, lng: null };
+    this.isEdit = false;
+  }
 }

@@ -42,9 +42,11 @@
         <div class="row-label">{{ row }}</div>
         <div class="seats">
           <div 
-            *ngFor="let seat of seatsByRow[row]"
+            *ngFor="let seat of seatsByRow[row]; let i = index; let total = count"
             class="seat-wrapper"
             [ngClass]="(seat.seatType || '').toLowerCase()"
+            [style.--seat-index]="i"
+            [style.--total-seats]="total"
           >
             <div 
               class="seat"

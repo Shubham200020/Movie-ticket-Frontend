@@ -121,4 +121,19 @@ export class LocationService {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c; // Distance in km
   }
+
+  async getTheaterCoordinates(theater: any): Promise<Coordinates | null> {
+    // 1. Use stored coordinates if available
+    if (theater.lat && theater.lng) {
+      return { lat: parseFloat(theater.lat), lon: parseFloat(theater.lng) };
+    }
+
+    // 2. Fallback to geocoding based on address
+    if (theater.location?.location && theater.location?.city) {
+      const address = `${theater.location.location}, ${theater.location.city}`;
+      return await this.getCoordinates(address);
+    }
+
+    return null;
+  }
 }
